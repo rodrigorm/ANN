@@ -2,12 +2,11 @@
 
 namespace Ann;
 
-use \Ann\NerveCell;
 use \Ann\Branch;
 use \Ann\OutputFunction;
 use \Ann\Input;
 
-class Neuron implements NerveCell
+class Neuron
 {
     private $branch;
     private $outputFunction;
