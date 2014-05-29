@@ -10,4 +10,9 @@ class Linear implements OutputFunction
     {
         return $value;
     }
+
+    public function derivative($value)
+    {
+        return 1;
+    }
 }

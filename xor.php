@@ -7,20 +7,21 @@ use \Ann\Neuron,
     \Ann\Synapse,
     \Ann\Peripheral,
     \Ann\Input,
-    \Ann\State,
+    \Ann\Trainer,
     \Ann\OutputFunction\Linear,
-    \Ann\OutputFunction\Sigmoid;
+    \Ann\OutputFunction\Sigmoid,
+    \Ann\OutputFunction\Threshold;
 
-$a = new State('a');
-$b = new State('b');
+$a = new Peripheral();
+$b = new Peripheral();
 
 $neuronA = new Neuron(
-    new Peripheral($a),
+    $a,
     new Linear()
 );
 
 $neuronB = new Neuron(
-    new Peripheral($b),
+    $b,
     new Linear()
 );
 
@@ -34,14 +35,10 @@ $output = new Neuron(
                             new Synapse(
                                 $neuronA,
                                 1.0
-                            ),
-                            new Synapse(
-                                $neuronB,
-                                1.0
                             )
                         )
                     ),
-                    new Sigmoid()
+                    new Threshold()
                 ),
                 1.0
             ),
@@ -59,34 +56,31 @@ $output = new Neuron(
                             )
                         )
                     ),
-                    new Sigmoid()
+                    new Threshold(2.0)
                 ),
-                1.0
+                -1.0
             ),
             new Synapse(
                 new Neuron(
                     new Dendrite(
                         array(
                             new Synapse(
-                                $neuronA,
-                                1.0
-                            ),
-                            new Synapse(
                                 $neuronB,
                                 1.0
                             )
                         )
                     ),
-                    new Sigmoid()
+                    new Threshold()
                 ),
                 1.0
-            )
+            ),
         )
     ),
     new Linear()
 );
 
 $input = new Input();
+$trainer = new Trainer();
 
 $data = array(
     array(0.0, 0.0, 0.0),
@@ -100,25 +94,17 @@ $train = 0;
 
 while ($train++ < 50) {
     echo "\r", 'Train: ', $train;
-
     foreach ($data as $tuple) {
         $input = $input->set($a, $tuple[0]);
         $input = $input->set($b, $tuple[1]);
-        $expected = $tuple[2];
-        $delta = $expected - $output->output($input);
-        $error = $delta * $delta;
-        $output = $output->learn($error, $input);
+        $output = $trainer->train($output, $input, $tuple[2]);
     }
 }
 echo "\n";
 
-$epoch = 0;
-while ($epoch++ < 10) {
-    shuffle($data);
-    $tuple = $data[0];
-
+foreach ($data  as $tuple) {
     $input = $input->set($a, $tuple[0]);
     $input = $input->set($b, $tuple[1]);
 
-    echo 'a = ', $tuple[0], ', b = ', $tuple[1], ', output = ', $output->output($input), "\n";
+    echo $tuple[0], ' XOR ', $tuple[1], ' = ', $tuple[2], ', output = ', $output->output($input),', error = ', abs($tuple[2] - $output->output($input)), "\n";
 }

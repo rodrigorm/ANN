@@ -17,16 +17,29 @@ class Neuron
         $this->outputFunction = $outputFunction;
     }
 
+    public function branch()
+    {
+        return $this->branch;
+    }
+
     public function output(Input $input)
     {
         return $this->outputFunction->forward($this->branch->output($input));
     }
 
-    public function learn($error, Input $input)
+    public function derivative(Input $input)
     {
-        return new self(
-            $this->branch->learn($error, $input),
-            $this->outputFunction
-        );
+        return $this->outputFunction->derivative($this->output($input));
+    }
+
+    public function learn(Input $input, $target, $tree)
+    {
+        $branch = $this->branch->learn($input, $target, $tree);
+
+        if ($branch !== $this->branch) {
+            return new self($branch, $this->outputFunction);
+        }
+
+        return $this;
     }
 }

@@ -2,45 +2,45 @@
 
 namespace Ann;
 
-use \Ann\State;
+use \Ann\Peripheral;
 
 class Input
 {
-    private $states = array();
+    private $keys = array();
     private $values = array();
 
-    public function __construct(array $states = array(), array $values = array())
+    public function __construct(array $keys = array(), array $values = array())
     {
-        $this->states = $states;
+        $this->keys = $keys;
         $this->values = $values;
     }
 
-    public function set(State $state, $value)
+    public function set(Peripheral $key, $value)
     {
-        $states = $this->states;
+        $keys = $this->keys;
         $values = $this->values;
 
-        $index = array_search($state, $this->states, true);
+        $index = array_search($key, $this->keys, true);
 
         if ($index === false) {
-            $index = count($states);
+            $index = count($keys);
         }
 
-        $states[$index] = $state;
+        $keys[$index] = $key;
         $values[$index] = $value;
 
         return new self(
-            $states,
+            $keys,
             $values
         );
     }
 
-    public function get(State $state)
+    public function get(Peripheral $key)
     {
-        $index = array_search($state, $this->states, true);
+        $index = array_search($key, $this->keys, true);
 
         if ($index === false) {
-            throw new \InvalidArgumentException(sprintf('State %s not found', $state));
+            throw new \InvalidArgumentException(sprintf('Peripheral not found'));
         }
 
         return $this->values[$index];

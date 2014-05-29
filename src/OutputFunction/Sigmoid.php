@@ -10,5 +10,10 @@ class Sigmoid implements OutputFunction
     {
         return 1 / (1 + pow(M_EULER, -$value));
     }
+
+    public function derivative($value)
+    {
+        return $this->forward($value) * (1.0 - $this->forward($value));
+    }
 }
 

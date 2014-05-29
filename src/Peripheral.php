@@ -4,23 +4,20 @@ namespace Ann;
 
 use \Ann\Branch;
 use \Ann\Input;
-use \Ann\State;
 
 class Peripheral implements Branch
 {
-    private $state;
-
-    public function __construct(State $state)
+    public function synapses()
     {
-        $this->state = $state;
+        return array();
     }
 
     public function output(Input $input)
     {
-        return $input->get($this->state);
+        return $input->get($this);
     }
 
-    public function learn($error, Input $input)
+    public function learn(Input $input, $target, $tree)
     {
         return $this;
     }

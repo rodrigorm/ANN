@@ -15,6 +15,11 @@ class Dendrite implements Branch
         $this->synapses = $synapses;
     }
 
+    public function synapses()
+    {
+        return $this->synapses;
+    }
+
     public function output(Input $input)
     {
         $result = 0;
@@ -26,14 +31,20 @@ class Dendrite implements Branch
         return $result;
     }
 
-    public function learn($error, Input $input)
+    public function learn(Input $input, $target, $tree)
     {
         $synapses = array();
 
         foreach ($this->synapses as $synapse) {
-            $synapses[] = $synapse->learn($error, $input);
+            $synapses[] = $synapse->learn($input, $target, $tree);
         }
 
-        return new self($synapses);
+        foreach ($this->synapses as $index => $synapse) {
+            if ($synapses[$index] !== $synapse) {
+                return new self($synapses);
+            }
+        }
+
+        return $this;
     }
 }

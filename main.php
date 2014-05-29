@@ -7,33 +7,33 @@ use \Ann\Neuron,
     \Ann\Synapse,
     \Ann\Peripheral,
     \Ann\Input,
-    \Ann\State,
+    \Ann\Trainer,
     \Ann\OutputFunction\Linear,
     \Ann\OutputFunction\Threshold;
 
-$a = new State('a');
-$b = new State('b');
+$a = new Peripheral();
+$b = new Peripheral();
 
 $output = new Neuron(
     new Dendrite(
         array(
             new Synapse(
                 new Neuron(
-                    new Peripheral($a),
+                    $a,
                     new Linear()
                 ),
                 0.3
             ),
             new Synapse(
                 new Neuron(
-                    new Peripheral($b),
+                    $b,
                     new Linear()
                 ),
                 0.3
             )
         )
     ),
-    new Threshold(1.0)
+    new Linear()
 );
 
 $expected = 1.0;
@@ -41,9 +41,10 @@ $epoch = 0;
 $input = new Input();
 $input = $input->set($a, 1.0);
 $input = $input->set($b, 1.0);
+$trainer = new Trainer();
 
-while ($epoch++ <= 10) {
+while ($epoch++ <= 30) {
     $error = $expected - $output->output($input);
     echo 'Epoch ', $epoch, ': ', $output->output($input), "\t", ' (Error: ', $error, ')', "\n";
-    $output = $output->learn($error, $input);
+    $output = $trainer->train($output, $input, $expected);
 }
