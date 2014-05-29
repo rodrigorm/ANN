@@ -47,7 +47,8 @@ class Tree
         $i = array_search($synapse->neuron(), $this->neurons, true);
         $j = array_search($synapse, $this->synapses[$i], true);
 
-        return $this->error($this->connections[$i][$j], $input, $target);
+        $neuron = $this->connections[$i][$j];
+        return $neuron->derivative($input) * $this->error($neuron, $input, $target);
     }
 
     private function error(Neuron $neuron, Input $input, $target)
@@ -55,7 +56,7 @@ class Tree
         $i = array_search($neuron, $this->neurons, true);
 
         if ($i === false) {
-            return $neuron->derivative($input) * ($target - $neuron->output($input));
+            return $target - $neuron->output($input);
         }
 
         $downstream = 0;
@@ -64,6 +65,6 @@ class Tree
             $downstream += $synapse->weight() * $this->error($this->connections[$i][$j], $input, $target);
         }
 
-        return $neuron->derivative($input) * $downstream;
+        return $downstream;
     }
 }

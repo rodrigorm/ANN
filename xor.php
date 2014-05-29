@@ -2,7 +2,8 @@
 
 require 'vendor/autoload.php';
 
-use \Ann\Neuron,
+use \Ann\Network,
+    \Ann\Neuron,
     \Ann\Dendrite,
     \Ann\Synapse,
     \Ann\Peripheral,
@@ -12,16 +13,13 @@ use \Ann\Neuron,
     \Ann\OutputFunction\Sigmoid,
     \Ann\OutputFunction\Threshold;
 
-$a = new Peripheral();
-$b = new Peripheral();
-
 $neuronA = new Neuron(
-    $a,
+    new Peripheral(),
     new Linear()
 );
 
 $neuronB = new Neuron(
-    $b,
+    new Peripheral(),
     new Linear()
 );
 
@@ -79,7 +77,7 @@ $output = new Neuron(
     new Linear()
 );
 
-$input = new Input();
+$network = new Network(array($neuronA, $neuronB), array($output));
 $trainer = new Trainer();
 
 $data = array(
@@ -91,24 +89,21 @@ $data = array(
 
 // Train
 $train = 0;
-$iterations = 100;
-$factor = 0.2;
+$iterations = 110;
 
 while ($train++ < $iterations) {
     echo "\r", 'Train: ', $train;
+    $factor = $train / $iterations;
 
     foreach ($data as $tuple) {
-        $input = $input->set($a, $tuple[0]);
-        $input = $input->set($b, $tuple[1]);
-        $output = $trainer->train($output, $input, $tuple[2], $factor);
+        $input = array($tuple[0], $tuple[1]);
+        $network = $network->train($trainer, $input, array($tuple[2]), $factor);
     }
-    $factor += 0.01;
 }
 echo "\n";
 
 foreach ($data  as $tuple) {
-    $input = $input->set($a, $tuple[0]);
-    $input = $input->set($b, $tuple[1]);
-
-    echo $tuple[0], ' XOR ', $tuple[1], ' = ', $tuple[2], ', output = ', $output->output($input),', error = ', abs($tuple[2] - $output->output($input)), "\n";
+    $input = array($tuple[0], $tuple[1]);
+    $response = $network->calculate($input);
+    echo $tuple[0], ' XOR ', $tuple[1], ' = ', $tuple[2], ', output = ', $response[0],', error = ', abs($tuple[2] - $response[0]), "\n";
 }
