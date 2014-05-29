@@ -32,9 +32,9 @@ class Neuron
         return $this->outputFunction->derivative($this->output($input));
     }
 
-    public function learn(Input $input, $target, $tree)
+    public function learn(Input $input, BackPropagation $teacher)
     {
-        $branch = $this->branch->learn($input, $target, $tree);
+        $branch = $this->branch->learn($input, $teacher);
 
         if ($branch !== $this->branch) {
             return new self($branch, $this->outputFunction);

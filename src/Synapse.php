@@ -31,13 +31,12 @@ class Synapse
         return $this->neuron->output($input) * $this->weight;
     }
 
-    public function learn(Input $input, $target, $tree)
+    public function learn(Input $input, BackPropagation $teacher)
     {
-        $neuron = $this->neuron->learn($input, $target, $tree);
+        $neuron = $this->neuron->learn($input, $teacher);
 
-        $factor = 0.2;
-        $delta = $tree->delta($this, $input, $target);
-        $weightChange = $factor * $delta * $this->neuron->output($input);
+        $delta = $teacher->delta($this);
+        $weightChange = $delta * $this->neuron->output($input);
 
         $weight = $this->weight + $weightChange;
 

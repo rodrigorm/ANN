@@ -22,29 +22,32 @@ $output = new Neuron(
                     $a,
                     new Linear()
                 ),
-                0.3
+                rand(0, 100) / 50.0
             ),
             new Synapse(
                 new Neuron(
                     $b,
                     new Linear()
                 ),
-                0.3
+                rand(0, 100) / 50.0
             )
         )
     ),
     new Linear()
 );
 
-$expected = 1.0;
-$epoch = 0;
 $input = new Input();
 $input = $input->set($a, 1.0);
 $input = $input->set($b, 1.0);
 $trainer = new Trainer();
 
-while ($epoch++ <= 30) {
-    $error = $expected - $output->output($input);
+$target = 1.0;
+$epoch = 0;
+$iterations = 30;
+
+while ($epoch++ < $iterations) {
+    $factor = $epoch / $iterations;
+    $error = $target - $output->output($input);
     echo 'Epoch ', $epoch, ': ', $output->output($input), "\t", ' (Error: ', $error, ')', "\n";
-    $output = $trainer->train($output, $input, $expected);
+    $output = $trainer->train($output, $input, $target, $factor);
 }

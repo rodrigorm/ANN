@@ -91,14 +91,18 @@ $data = array(
 
 // Train
 $train = 0;
+$iterations = 100;
+$factor = 0.2;
 
-while ($train++ < 50) {
+while ($train++ < $iterations) {
     echo "\r", 'Train: ', $train;
+
     foreach ($data as $tuple) {
         $input = $input->set($a, $tuple[0]);
         $input = $input->set($b, $tuple[1]);
-        $output = $trainer->train($output, $input, $tuple[2]);
+        $output = $trainer->train($output, $input, $tuple[2], $factor);
     }
+    $factor += 0.01;
 }
 echo "\n";
 

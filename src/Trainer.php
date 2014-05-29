@@ -9,11 +9,11 @@ use \Ann\BackPropagation;
 
 class Trainer
 {
-    public function train(Neuron $neuron, Input $input, $target)
+    public function train(Neuron $neuron, Input $input, $target, $factor = 0.2)
     {
         $tree = $this->reverse($neuron, new Tree());
-        $teacher = new BackPropagation($tree);
-        return $teacher->teach($neuron, $input, $target);
+        $teacher = new BackPropagation($tree, $input, $target, $factor);
+        return $teacher->teach($neuron);
     }
 
     private function reverse(Neuron $neuron, Tree $tree)

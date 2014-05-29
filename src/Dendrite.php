@@ -31,12 +31,12 @@ class Dendrite implements Branch
         return $result;
     }
 
-    public function learn(Input $input, $target, $tree)
+    public function learn(Input $input, BackPropagation $teacher)
     {
         $synapses = array();
 
         foreach ($this->synapses as $synapse) {
-            $synapses[] = $synapse->learn($input, $target, $tree);
+            $synapses[] = $synapse->learn($input, $teacher);
         }
 
         foreach ($this->synapses as $index => $synapse) {

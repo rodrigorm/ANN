@@ -17,7 +17,7 @@ class Peripheral implements Branch
         return $input->get($this);
     }
 
-    public function learn(Input $input, $target, $tree)
+    public function learn(Input $input, BackPropagation $teacher)
     {
         return $this;
     }
