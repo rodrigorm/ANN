@@ -51,8 +51,8 @@ class Network
     {
         $request = new Input();
 
-        foreach ($this->inputs as $i => $input) {
-            $request = $request->set($input->branch(), $data[$i]);
+        foreach ($data as $i => $value) {
+            $request = $request->set($this->inputs[$i]->branch(), $value);
         }
 
         return $request;
@@ -61,37 +61,45 @@ class Network
     public static function create($nodes)
     {
         $layers = array();
-        $function = new Sigmoid();
-
-        if (count($nodes) == 2) {
-            $function = new Linear();
-        }
 
         foreach ($nodes as $count) {
             $i = count($layers);
             $layers[$i] = array();
 
-            for ($j = 0; $j < $count; $j++) {
+            for ($j = 0; $j <= $count; $j++) {
+                if ($i == count($nodes) - 1 && $j == $count) {
+                    continue;
+                }
 
-                if ($i === 0) {
-                    $neuron = new Neuron(
-                        new Peripheral(),
-                        $function
-                    );
+                $branch = new Peripheral();
+                $function = new Sigmoid();
+
+                if (count($nodes) == 2) {
+                    $function = new Linear();
+                }
+
+                if ($j == $count) {
+                    $branch = new Bias();
+                    $function = new Linear();
+                } elseif ($i == 0) {
+                    $function = new Linear();
                 } else {
                     $synapses = array();
-                    foreach ($layers[$i -1] as $neuron) {
+
+                    foreach ($layers[$i - 1] as $neuron) {
                         $synapses[] = new Synapse(
                             $neuron,
                             -1.0 + (rand(0, 100) / 50.0)
                         );
                     }
 
-                    $neuron = new Neuron(
-                        new Dendrite($synapses),
-                        $function
-                    );
+                    $branch = new Dendrite($synapses);
                 }
+
+                $neuron = new Neuron(
+                    $branch,
+                    $function
+                );
                 $layers[$i][$j] = $neuron;
             }
         }

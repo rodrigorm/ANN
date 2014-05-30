@@ -51,7 +51,7 @@ class Tree
         return $neuron->derivative($input) * $this->error($neuron, $input, $target);
     }
 
-    private function error(Neuron $neuron, Input $input, $target)
+    public function error(Neuron $neuron, Input $input, $target)
     {
         $i = array_search($neuron, $this->neurons, true);
 

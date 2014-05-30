@@ -22,6 +22,11 @@ class Neuron
         return $this->branch;
     }
 
+    public function outputFunction()
+    {
+        return $this->outputFunction;
+    }
+
     public function output(Input $input)
     {
         return $this->outputFunction->forward($this->branch->output($input));
@@ -29,7 +34,7 @@ class Neuron
 
     public function derivative(Input $input)
     {
-        return $this->outputFunction->derivative($this->output($input));
+        return $this->outputFunction->derivative($this->branch->output($input));
     }
 
     public function learn(Input $input, BackPropagation $teacher)

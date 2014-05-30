@@ -1,98 +1,36 @@
 <?php
 
 require 'vendor/autoload.php';
+require 'utils.php';
 
 use \Ann\Network,
     \Ann\Neuron,
     \Ann\Dendrite,
     \Ann\Synapse,
     \Ann\Peripheral,
+    \Ann\Bias,
     \Ann\Input,
     \Ann\Trainer,
     \Ann\OutputFunction\Linear,
     \Ann\OutputFunction\Sigmoid,
     \Ann\OutputFunction\Threshold;
 
-$neuronA = new Neuron(
-    new Peripheral(),
-    new Linear()
-);
-
-$neuronB = new Neuron(
-    new Peripheral(),
-    new Linear()
-);
-
-$output = new Neuron(
-    new Dendrite(
-        array(
-            new Synapse(
-                new Neuron(
-                    new Dendrite(
-                        array(
-                            new Synapse(
-                                $neuronA,
-                                1.0
-                            )
-                        )
-                    ),
-                    new Threshold()
-                ),
-                1.0
-            ),
-            new Synapse(
-                new Neuron(
-                    new Dendrite(
-                        array(
-                            new Synapse(
-                                $neuronA,
-                                1.0
-                            ),
-                            new Synapse(
-                                $neuronB,
-                                1.0
-                            )
-                        )
-                    ),
-                    new Threshold(2.0)
-                ),
-                -1.0
-            ),
-            new Synapse(
-                new Neuron(
-                    new Dendrite(
-                        array(
-                            new Synapse(
-                                $neuronB,
-                                1.0
-                            )
-                        )
-                    ),
-                    new Threshold()
-                ),
-                1.0
-            ),
-        )
-    ),
-    new Linear()
-);
-
-$network = new Network(array($neuronA, $neuronB), array($output));
+$network = Network::create(array(2, 3, 1));
 $trainer = new Trainer();
 
 $data = array(
     array(0.0, 0.0, 0.0),
     array(0.0, 1.0, 1.0),
     array(1.0, 0.0, 1.0),
-    array(1.0, 1.0, 0.0)
+    array(1.0, 1.0, 0.0),
 );
 
 // Train
 $train = 0;
-$iterations = 110;
+$iterations = 6000;
 
 while ($train++ < $iterations) {
-    echo "\r", 'Train: ', $train;
+    echo "\r", 'Train: ', $train, '/', $iterations;
     $factor = $train / $iterations;
 
     foreach ($data as $tuple) {

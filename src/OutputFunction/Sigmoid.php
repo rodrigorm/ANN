@@ -8,7 +8,7 @@ class Sigmoid implements OutputFunction
 {
     public function forward($value)
     {
-        return 1 / (1 + pow(M_EULER, -$value));
+        return 1.0 / (1.0 + exp(-$value));
     }
 
     public function derivative($value)
