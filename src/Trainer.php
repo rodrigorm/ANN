@@ -2,24 +2,26 @@
 
 namespace Ann;
 
+use \Ann\Network;
 use \Ann\Neuron;
 use \Ann\Input;
 use \Ann\Tree;
 use \Ann\BackPropagation;
 use \Ann\TreeBuilder;
+use \Ann\Trainset;
 
 class Trainer
 {
-    public function train(Neuron $neuron, Input $input, $target, $factor = 0.2)
+    public function train(Network $network, Trainset $trainset, $factor)
     {
-        $tree = $this->buildTree($neuron, new Tree());
-        $teacher = new BackPropagation($tree, $input, $target, $factor);
-        return $teacher->teach($neuron);
+        $tree = $this->buildTree($network, new Tree());
+        $teacher = new BackPropagation($tree, $trainset, $factor);
+        return $teacher->teach($network);
     }
 
-    private function buildTree(Neuron $neuron, Tree $tree)
+    private function buildTree(Network $network, Tree $tree)
     {
         $builder = new TreeBuilder($tree);
-        return $neuron->accept($builder)->build();
+        return $network->accept($builder)->build();
     }
 }

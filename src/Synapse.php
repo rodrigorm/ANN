@@ -33,22 +33,6 @@ class Synapse implements Visitee
         return $this->neuron->output($input) * $this->weight;
     }
 
-    public function learn(Input $input, BackPropagation $teacher)
-    {
-        $neuron = $this->neuron->learn($input, $teacher);
-
-        $delta = $teacher->delta($this);
-        $weightChange = $delta * $this->neuron->output($input);
-
-        $weight = $this->weight + $weightChange;
-
-        if ($neuron !== $this->neuron || $weight !== $this->weight) {
-            return new self($neuron, $weight);
-        }
-
-        return $this;
-    }
-
     public function accept(Visitor $visitor)
     {
         return $visitor->visitSynapse($this, $this->neuron, $this->weight);

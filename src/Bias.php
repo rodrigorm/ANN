@@ -13,11 +13,6 @@ class Bias implements Branch
         return 1.0;
     }
 
-    public function learn(Input $input, BackPropagation $teacher)
-    {
-        return $this;
-    }
-
     public function accept(Visitor $visitor)
     {
         return $visitor->visitBias($this);

@@ -28,6 +28,17 @@ class TreeBuilder implements Visitor
         return $this->tree;
     }
 
+    public function visitNetwork(Network $network, array $inputs, array $outputs)
+    {
+        $visitor = $this;
+
+        foreach ($outputs as $neuron) {
+            $visitor = $neuron->accept($this);
+        }
+
+        return $visitor;
+    }
+
     public function visitNeuron(Neuron $neuron, Branch $branch, OutputFunction $function)
     {
         $visitor = new self($this->tree, $neuron);

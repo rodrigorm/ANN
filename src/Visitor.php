@@ -2,6 +2,7 @@
 
 namespace Ann;
 
+use \Ann\Network;
 use \Ann\Neuron;
 use \Ann\Branch;
 use \Ann\OutputFunction;
@@ -12,6 +13,7 @@ use \Ann\Synapse;
 
 interface Visitor
 {
+    public function visitNetwork(Network $network, array $inputs, array $outputs);
     public function visitNeuron(Neuron $neuron, Branch $branch, OutputFunction $function);
     public function visitPeripheral(Peripheral $peripheral);
     public function visitBias(Bias $bias);

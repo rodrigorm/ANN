@@ -2,6 +2,8 @@
 
 namespace Ann;
 
+use \Ann\Trainset;
+
 class Tree
 {
     private $neurons = array();
@@ -42,27 +44,27 @@ class Tree
         return new self($neurons, $synapses, $connections);
     }
 
-    public function delta(Synapse $synapse, Input $input, $target)
+    public function delta(Synapse $synapse, Trainset $trainset)
     {
         $i = array_search($synapse->neuron(), $this->neurons, true);
         $j = array_search($synapse, $this->synapses[$i], true);
 
         $neuron = $this->connections[$i][$j];
-        return $neuron->derivative($input) * $this->error($neuron, $input, $target);
+        return $trainset->derivative($neuron) * $this->error($neuron, $trainset);
     }
 
-    public function error(Neuron $neuron, Input $input, $target)
+    public function error(Neuron $neuron, Trainset $trainset)
     {
         $i = array_search($neuron, $this->neurons, true);
 
         if ($i === false) {
-            return $target - $neuron->output($input);
+            return $trainset->target($neuron) - $trainset->output($neuron);
         }
 
         $downstream = 0;
 
         foreach ($this->synapses[$i] as $j => $synapse) {
-            $downstream += $synapse->weight() * $this->error($this->connections[$i][$j], $input, $target);
+            $downstream += $synapse->weight() * $this->error($this->connections[$i][$j], $trainset);
         }
 
         return $downstream;

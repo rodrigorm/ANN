@@ -13,11 +13,6 @@ class Peripheral implements Branch
         return $input->get($this);
     }
 
-    public function learn(Input $input, BackPropagation $teacher)
-    {
-        return $this;
-    }
-
     public function accept(Visitor $visitor)
     {
         return $visitor->visitPeripheral($this);

@@ -27,23 +27,6 @@ class Dendrite implements Branch
         return $result;
     }
 
-    public function learn(Input $input, BackPropagation $teacher)
-    {
-        $synapses = array();
-
-        foreach ($this->synapses as $synapse) {
-            $synapses[] = $synapse->learn($input, $teacher);
-        }
-
-        foreach ($this->synapses as $index => $synapse) {
-            if ($synapses[$index] !== $synapse) {
-                return new self($synapses);
-            }
-        }
-
-        return $this;
-    }
-
     public function accept(Visitor $visitor)
     {
         return $visitor->visitDendrite($this, $this->synapses);

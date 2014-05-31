@@ -2,10 +2,10 @@
 
 namespace Ann;
 
-use \Ann\Peripheral;
+use \Ann\Neuron;
 use \SplObjectStorage;
 
-class Input
+class Output
 {
     private $storage;
 
@@ -14,15 +14,16 @@ class Input
         $this->storage = $storage ? $storage : new SplObjectStorage();
     }
 
-    public function set(Peripheral $key, $value)
+    public function set(Neuron $key, $value)
     {
         $storage = clone $this->storage;
         $storage->attach($key, $value);
         return new self($storage);
     }
 
-    public function get(Peripheral $key)
+    public function get(Neuron $key)
     {
         return $this->storage[$key];
     }
 }
+
