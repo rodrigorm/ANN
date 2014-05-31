@@ -5,23 +5,21 @@ namespace Ann;
 use \Ann\Network;
 use \Ann\Neuron;
 use \Ann\Input;
-use \Ann\Tree;
 use \Ann\BackPropagation;
-use \Ann\TreeBuilder;
 use \Ann\Trainset;
 
 class Trainer
 {
     public function train(Network $network, Trainset $trainset, $factor)
     {
-        $tree = $this->buildTree($network, new Tree());
-        $teacher = new BackPropagation($tree, $trainset, $factor);
+        $delta = $this->buildDelta($network, $trainset);
+        $teacher = new BackPropagation($delta, $trainset, $factor);
         return $teacher->teach($network);
     }
 
-    private function buildTree(Network $network, Tree $tree)
+    private function buildDelta(Network $network, Trainset $trainset)
     {
-        $builder = new TreeBuilder($tree);
-        return $network->accept($builder)->build();
+        $builder = new DeltaBuilder();
+        return $network->accept($builder)->build($trainset);
     }
 }

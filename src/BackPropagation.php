@@ -5,20 +5,20 @@ namespace Ann;
 use \Ann\Neuron;
 use \Ann\Trainset;
 use \Ann\BackPropagation\Node;
-use \Ann\Tree;
+use \Ann\Delta;
 use \Ann\Visitor;
 use \SplObjectStorage;
 
 class BackPropagation implements Visitor
 {
-    private $tree;
+    private $delta;
     private $trainset;
     private $factor;
     private $objects;
 
-    public function __construct(Tree $tree, Trainset $trainset, $factor, SplObjectStorage $objects = null)
+    public function __construct(Delta $delta, Trainset $trainset, $factor, SplObjectStorage $objects = null)
     {
-        $this->tree = $tree;
+        $this->delta = $delta;
         $this->trainset = $trainset;
         $this->factor = $factor;
         $this->objects = $objects ? $objects : new SplObjectStorage();
@@ -71,17 +71,12 @@ class BackPropagation implements Visitor
     {
         $visitor = $neuron->accept($this);
 
-        $delta = $visitor->delta($synapse);
+        $delta = $this->factor * $this->delta->delta($synapse);
         $weightChange = $delta * $visitor->trainset->output($neuron);
 
         $weight = $weight + $weightChange;
 
         return $visitor->set($synapse, new Synapse($visitor->get($neuron), $weight));
-    }
-
-    private function delta(Synapse $synapse)
-    {
-        return $this->factor * $this->tree->delta($synapse, $this->trainset);
     }
 
     private function set($key, $value)
@@ -93,7 +88,7 @@ class BackPropagation implements Visitor
         $objects = clone $this->objects;
         $objects->attach($key, $value);
 
-        return new self($this->tree, $this->trainset, $this->factor, $objects);
+        return new self($this->delta, $this->trainset, $this->factor, $objects);
     }
 
     private function get($key)
