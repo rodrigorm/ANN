@@ -5,8 +5,10 @@ namespace Ann;
 use \Ann\Branch;
 use \Ann\OutputFunction;
 use \Ann\Input;
+use \Ann\Visitor;
+use \Ann\Visitee;
 
-class Neuron
+class Neuron implements Visitee
 {
     private $branch;
     private $outputFunction;
@@ -46,5 +48,10 @@ class Neuron
         }
 
         return $this;
+    }
+
+    public function accept(Visitor $visitor)
+    {
+        return $visitor->visitNeuron($this, $this->branch, $this->outputFunction);
     }
 }

@@ -4,8 +4,10 @@ namespace Ann;
 
 use \Ann\Neuron;
 use \Ann\Input;
+use \Ann\Visitee;
+use \Ann\Visitor;
 
-class Synapse
+class Synapse implements Visitee
 {
     private $neuron;
     private $weight = 0;
@@ -45,5 +47,10 @@ class Synapse
         }
 
         return $this;
+    }
+
+    public function accept(Visitor $visitor)
+    {
+        return $visitor->visitSynapse($this, $this->neuron, $this->weight);
     }
 }

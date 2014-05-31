@@ -3,10 +3,11 @@
 namespace Ann;
 
 use \Ann\Input;
+use \Ann\BackPropagation;
+use \Ann\Visitee;
 
-interface Branch
+interface Branch extends Visitee
 {
-    public function synapses();
     public function output(Input $input);
     public function learn(Input $input, BackPropagation $teacher);
 }

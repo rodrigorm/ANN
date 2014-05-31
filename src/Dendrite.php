@@ -5,6 +5,7 @@ namespace Ann;
 use \Ann\Branch;
 use \Ann\Synapse;
 use \Ann\Input;
+use \Ann\Visitor;
 
 class Dendrite implements Branch
 {
@@ -13,11 +14,6 @@ class Dendrite implements Branch
     public function __construct(array $synapses)
     {
         $this->synapses = $synapses;
-    }
-
-    public function synapses()
-    {
-        return $this->synapses;
     }
 
     public function output(Input $input)
@@ -46,5 +42,10 @@ class Dendrite implements Branch
         }
 
         return $this;
+    }
+
+    public function accept(Visitor $visitor)
+    {
+        return $visitor->visitDendrite($this, $this->synapses);
     }
 }

@@ -4,14 +4,10 @@ namespace Ann;
 
 use \Ann\Branch;
 use \Ann\Input;
+use \Ann\Visitor;
 
 class Peripheral implements Branch
 {
-    public function synapses()
-    {
-        return array();
-    }
-
     public function output(Input $input)
     {
         return $input->get($this);
@@ -20,6 +16,11 @@ class Peripheral implements Branch
     public function learn(Input $input, BackPropagation $teacher)
     {
         return $this;
+    }
+
+    public function accept(Visitor $visitor)
+    {
+        return $visitor->visitPeripheral($this);
     }
 }
 
