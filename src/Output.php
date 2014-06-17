@@ -2,7 +2,6 @@
 
 namespace Ann;
 
-use \Ann\Neuron;
 use \SplObjectStorage;
 
 class Output
@@ -14,16 +13,32 @@ class Output
         $this->storage = $storage ? $storage : new SplObjectStorage();
     }
 
-    public function set(Neuron $key, $value)
+    public function set($key, $value)
     {
         $storage = clone $this->storage;
         $storage->attach($key, $value);
         return new self($storage);
     }
 
-    public function get(Neuron $key)
+    public function get($key)
     {
         return $this->storage[$key];
+    }
+
+    public function toArray()
+    {
+        $result = array();
+
+        foreach ($this->storage as $key) {
+            $result[] = $this->storage[$key];
+        }
+
+        return $result;
+    }
+
+    public function contains($key)
+    {
+        return $this->storage->contains($key);
     }
 }
 

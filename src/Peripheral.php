@@ -3,14 +3,19 @@
 namespace Ann;
 
 use \Ann\Branch;
-use \Ann\Input;
+use \Ann\Activation;
 use \Ann\Visitor;
 
 class Peripheral implements Branch
 {
-    public function output(Input $input)
+    public function output(Activation $activation)
     {
-        return $input->get($this);
+        return $activation->activate($this);
+    }
+
+    public function activate(Activation $activation)
+    {
+        return $activation->input($this);
     }
 
     public function accept(Visitor $visitor)

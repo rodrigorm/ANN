@@ -8,7 +8,12 @@ use \Ann\Visitor;
 
 class Bias implements Branch
 {
-    public function output(Input $input)
+    public function output(Activation $activation)
+    {
+        return $activation->activate($this);
+    }
+
+    public function activate(Activation $Activation)
     {
         return 1.0;
     }

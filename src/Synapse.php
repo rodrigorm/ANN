@@ -3,7 +3,7 @@
 namespace Ann;
 
 use \Ann\Neuron;
-use \Ann\Input;
+use \Ann\Activation;
 use \Ann\Visitee;
 use \Ann\Visitor;
 
@@ -28,9 +28,15 @@ class Synapse implements Visitee
         return $this->weight;
     }
 
-    public function output(Input $input)
+    public function output(Activation $activation)
     {
-        return $this->neuron->output($input) * $this->weight;
+        $activation = $this->neuron->output($activation);
+        return $activation->activate($this);
+    }
+
+    public function activate(Activation $activation)
+    {
+        return $activation->output($this->neuron) * $this->weight;
     }
 
     public function accept(Visitor $visitor)

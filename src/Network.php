@@ -8,6 +8,7 @@ use \Ann\OutputFunction\Sigmoid;
 use \Ann\Trainset;
 use \Ann\Visitee;
 use \Ann\Visitor;
+use \Ann\Activation;
 
 class Network implements Visitee
 {
@@ -22,11 +23,12 @@ class Network implements Visitee
 
     public function calculate(array $data)
     {
-        $request = $this->request($data);
-        $response = array();
+        $activation = $this->activate($data);
+
+        $response = new Output();
 
         foreach ($this->outputs as $output) {
-            $response[] = $output->output($request);
+            $response = $response->set($output, $activation->output($output));
         }
 
         return $response;
@@ -34,9 +36,20 @@ class Network implements Visitee
 
     public function train(Trainer $trainer, array $data, array $targets, $factor)
     {
-        $request = $this->request($data);
+        $activation = $this->activate($data);
         $response = $this->response($targets);
-        return $trainer->train($this, new Trainset($request, $response), $factor);
+        return $trainer->train($this, new Trainset($activation, $response), $factor);
+    }
+
+    private function activate(array $data)
+    {
+        $activation = new Activation($this->request($data), new Output());
+
+        foreach ($this->outputs as $output) {
+            $activation = $output->output($activation);
+        }
+
+        return $activation;
     }
 
     public function accept(Visitor $visitor)
