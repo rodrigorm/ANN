@@ -8,8 +8,7 @@
 
   <testsuites>
     <testsuite name="ANN">
-      <directory suffix="Test.php">tests/unit/</directory>
-      <directory suffix="Test.php">tests/integration/</directory>
+      <directory suffix="Test.php">tests/</directory>
     </testsuite>
   </testsuites>
 
