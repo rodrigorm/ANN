@@ -23,4 +23,3 @@ class Peripheral implements Branch
         return $visitor->visitPeripheral($this);
     }
 }
-

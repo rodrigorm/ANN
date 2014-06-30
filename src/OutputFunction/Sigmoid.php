@@ -16,4 +16,3 @@ class Sigmoid implements OutputFunction
         return $this->forward($value) * (1.0 - $this->forward($value));
     }
 }
-

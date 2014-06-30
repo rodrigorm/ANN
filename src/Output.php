@@ -41,4 +41,3 @@ class Output
         return $this->storage->contains($key);
     }
 }
-

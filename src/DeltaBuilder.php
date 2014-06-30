@@ -151,4 +151,3 @@ class DeltaBuilder implements Visitor
         return $downstream;
     }
 }
-

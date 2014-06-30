@@ -23,4 +23,3 @@ class Bias implements Branch
         return $visitor->visitBias($this);
     }
 }
-
