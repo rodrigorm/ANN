@@ -3,23 +3,24 @@
 namespace Ann;
 
 use \Ann\Branch;
-use \Ann\Input;
+use \Ann\Activation;
+use \Ann\Visitor;
 
 class Peripheral implements Branch
 {
-    public function synapses()
+    public function output(Activation $activation)
     {
-        return array();
+        return $activation->activate($this);
     }
 
-    public function output(Input $input)
+    public function activate(Activation $activation)
     {
-        return $input->get($this);
+        return $activation->input($this);
     }
 
-    public function learn(Input $input, BackPropagation $teacher)
+    public function accept(Visitor $visitor)
     {
-        return $this;
+        return $visitor->visitPeripheral($this);
     }
 }
 

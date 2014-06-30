@@ -4,7 +4,8 @@ namespace Ann;
 
 use \Ann\Branch;
 use \Ann\Synapse;
-use \Ann\Input;
+use \Ann\Activation;
+use \Ann\Visitor;
 
 class Dendrite implements Branch
 {
@@ -15,36 +16,28 @@ class Dendrite implements Branch
         $this->synapses = $synapses;
     }
 
-    public function synapses()
+    public function output(Activation $activation)
     {
-        return $this->synapses;
+        foreach ($this->synapses as $synapse) {
+            $activation = $synapse->output($activation);
+        }
+
+        return $activation->activate($this);
     }
 
-    public function output(Input $input)
+    public function activate(Activation $activation)
     {
         $result = 0;
 
         foreach ($this->synapses as $synapse) {
-            $result += $synapse->output($input);
+            $result += $activation->output($synapse);
         }
 
         return $result;
     }
 
-    public function learn(Input $input, BackPropagation $teacher)
+    public function accept(Visitor $visitor)
     {
-        $synapses = array();
-
-        foreach ($this->synapses as $synapse) {
-            $synapses[] = $synapse->learn($input, $teacher);
-        }
-
-        foreach ($this->synapses as $index => $synapse) {
-            if ($synapses[$index] !== $synapse) {
-                return new self($synapses);
-            }
-        }
-
-        return $this;
+        return $visitor->visitDendrite($this, $this->synapses);
     }
 }

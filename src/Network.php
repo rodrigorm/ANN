@@ -5,8 +5,12 @@ namespace Ann;
 use \Ann\Neuron;
 use \Ann\OutputFunction\Linear;
 use \Ann\OutputFunction\Sigmoid;
+use \Ann\Trainset;
+use \Ann\Visitee;
+use \Ann\Visitor;
+use \Ann\Activation;
 
-class Network
+class Network implements Visitee
 {
     private $inputs;
     private $outputs;
@@ -19,11 +23,12 @@ class Network
 
     public function calculate(array $data)
     {
-        $request = $this->request($data);
-        $response = array();
+        $activation = $this->activate($data);
+
+        $response = new Output();
 
         foreach ($this->outputs as $output) {
-            $response[] = $output->output($request);
+            $response = $response->set($output, $activation->output($output));
         }
 
         return $response;
@@ -31,35 +36,52 @@ class Network
 
     public function train(Trainer $trainer, array $data, array $targets, $factor)
     {
-        $request = $this->request($data);
-        $outputs = array();
+        $activation = $this->activate($data);
+        $response = $this->response($targets);
+        return $trainer->train($this, new Trainset($activation, $response), $factor);
+    }
 
-        foreach ($this->outputs as $i => $output) {
-            $outputs[] = $trainer->train($output, $request, $targets[$i], $factor);
+    private function activate(array $data)
+    {
+        $activation = new Activation($this->request($data), new Output());
+
+        foreach ($this->outputs as $output) {
+            $activation = $output->output($activation);
         }
 
-        foreach ($this->outputs as $i => $output) {
-            if ($outputs[$i] !== $outputs) {
-                return new self($this->inputs, $outputs);
-            }
-        }
+        return $activation;
+    }
 
-        return $this;
+    public function accept(Visitor $visitor)
+    {
+        return $visitor->visitNetwork($this, $this->inputs, $this->outputs);
     }
 
     private function request(array $data)
     {
-        $request = new Input();
+        $result = new Input();
 
         foreach ($data as $i => $value) {
-            $request = $request->set($this->inputs[$i]->branch(), $value);
+            $result = $result->set($this->inputs[$i], $value);
         }
 
-        return $request;
+        return $result;
+    }
+
+    private function response(array $data)
+    {
+        $result = new Output();
+
+        foreach ($data as $i => $value) {
+            $result = $result->set($this->outputs[$i], $value);
+        }
+
+        return $result;
     }
 
     public static function create($nodes)
     {
+        $inputs = array();
         $layers = array();
 
         foreach ($nodes as $count) {
@@ -96,6 +118,10 @@ class Network
                     $branch = new Dendrite($synapses);
                 }
 
+                if ($branch instanceof Peripheral) {
+                    $inputs[] = $branch;
+                }
+
                 $neuron = new Neuron(
                     $branch,
                     $function
@@ -105,7 +131,7 @@ class Network
         }
 
         return new Network(
-            $layers[0],
+            $inputs,
             $layers[count($layers) - 1]
         );
     }

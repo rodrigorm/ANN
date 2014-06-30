@@ -4,9 +4,11 @@ namespace Ann;
 
 use \Ann\Branch;
 use \Ann\OutputFunction;
-use \Ann\Input;
+use \Ann\Visitor;
+use \Ann\Visitee;
+use \Ann\Activation;
 
-class Neuron
+class Neuron implements Visitee
 {
     private $branch;
     private $outputFunction;
@@ -17,34 +19,24 @@ class Neuron
         $this->outputFunction = $outputFunction;
     }
 
-    public function branch()
+    public function output(Activation $activation)
     {
-        return $this->branch;
+        $activation = $this->branch->output($activation);
+        return $activation->activate($this);
     }
 
-    public function outputFunction()
+    public function activate(Activation $activation)
     {
-        return $this->outputFunction;
+        return $this->outputFunction->forward($activation->output($this->branch));
     }
 
-    public function output(Input $input)
+    public function derivative(Activation $activation)
     {
-        return $this->outputFunction->forward($this->branch->output($input));
+        return $this->outputFunction->derivative($activation->output($this->branch));
     }
 
-    public function derivative(Input $input)
+    public function accept(Visitor $visitor)
     {
-        return $this->outputFunction->derivative($this->branch->output($input));
-    }
-
-    public function learn(Input $input, BackPropagation $teacher)
-    {
-        $branch = $this->branch->learn($input, $teacher);
-
-        if ($branch !== $this->branch) {
-            return new self($branch, $this->outputFunction);
-        }
-
-        return $this;
+        return $visitor->visitNeuron($this, $this->branch, $this->outputFunction);
     }
 }

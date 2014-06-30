@@ -4,22 +4,23 @@ namespace Ann;
 
 use \Ann\Branch;
 use \Ann\Input;
+use \Ann\Visitor;
 
 class Bias implements Branch
 {
-    public function synapses()
+    public function output(Activation $activation)
     {
-        return array();
+        return $activation->activate($this);
     }
 
-    public function output(Input $input)
+    public function activate(Activation $Activation)
     {
         return 1.0;
     }
 
-    public function learn(Input $input, BackPropagation $teacher)
+    public function accept(Visitor $visitor)
     {
-        return $this;
+        return $visitor->visitBias($this);
     }
 }
 

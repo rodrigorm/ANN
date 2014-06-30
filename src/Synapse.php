@@ -3,9 +3,11 @@
 namespace Ann;
 
 use \Ann\Neuron;
-use \Ann\Input;
+use \Ann\Activation;
+use \Ann\Visitee;
+use \Ann\Visitor;
 
-class Synapse
+class Synapse implements Visitee
 {
     private $neuron;
     private $weight = 0;
@@ -26,24 +28,19 @@ class Synapse
         return $this->weight;
     }
 
-    public function output(Input $input)
+    public function output(Activation $activation)
     {
-        return $this->neuron->output($input) * $this->weight;
+        $activation = $this->neuron->output($activation);
+        return $activation->activate($this);
     }
 
-    public function learn(Input $input, BackPropagation $teacher)
+    public function activate(Activation $activation)
     {
-        $neuron = $this->neuron->learn($input, $teacher);
+        return $activation->output($this->neuron) * $this->weight;
+    }
 
-        $delta = $teacher->delta($this);
-        $weightChange = $delta * $this->neuron->output($input);
-
-        $weight = $this->weight + $weightChange;
-
-        if ($neuron !== $this->neuron || $weight !== $this->weight) {
-            return new self($neuron, $weight);
-        }
-
-        return $this;
+    public function accept(Visitor $visitor)
+    {
+        return $visitor->visitSynapse($this, $this->neuron, $this->weight);
     }
 }

@@ -3,32 +3,111 @@
 namespace Ann;
 
 use \Ann\Neuron;
-use \Ann\Input;
+use \Ann\Trainset;
 use \Ann\BackPropagation\Node;
-use \Ann\Tree;
+use \Ann\Delta;
+use \Ann\Visitor;
+use \SplObjectStorage;
 
-class BackPropagation
+class BackPropagation implements Visitor
 {
-    private $tree;
-    private $input;
-    private $target;
+    private $delta;
+    private $trainset;
     private $factor;
+    private $objects;
 
-    public function __construct(Tree $tree, Input $input, $target, $factor)
+    public function __construct(Delta $delta, Trainset $trainset, $factor, SplObjectStorage $objects = null)
     {
-        $this->tree = $tree;
-        $this->input = $input;
-        $this->target = $target;
+        $this->delta = $delta;
+        $this->trainset = $trainset;
         $this->factor = $factor;
+        $this->objects = $objects ? $objects : new SplObjectStorage();
     }
 
-    public function teach(Neuron $neuron)
+    public function teach(Network $network)
     {
-        return $neuron->learn($this->input, $this);
+        return $network->accept($this)->get($network);
     }
 
-    public function delta(Synapse $synapse)
+    public function visitNetwork(Network $network, array $inputs, array $outputs)
     {
-        return $this->factor * $this->tree->delta($synapse, $this->input, $this->target);
+        $visitor = $this;
+
+        foreach ($outputs as $neuron) {
+            $visitor = $neuron->accept($this);
+        }
+
+        return $visitor->set($network, new Network($inputs, $visitor->getAll($outputs)));
+    }
+
+    public function visitNeuron(Neuron $neuron, Branch $branch, OutputFunction $function)
+    {
+        $visitor = $branch->accept($this);
+        return $visitor->set($neuron, new Neuron($visitor->get($branch), $function));
+    }
+
+    public function visitPeripheral(Peripheral $peripheral)
+    {
+        return $this;
+    }
+
+    public function visitBias(Bias $bias)
+    {
+        return $this;
+    }
+
+    public function visitDendrite(Dendrite $dendrite, array $synapses)
+    {
+        $visitor = $this;
+
+        foreach ($synapses as $synapse) {
+            $visitor = $synapse->accept($visitor);
+        }
+
+        return $visitor->set($dendrite, new Dendrite($visitor->getAll($synapses)));
+    }
+
+    public function visitSynapse(Synapse $synapse, Neuron $neuron, $weight)
+    {
+        $visitor = $neuron->accept($this);
+
+        $delta = $this->factor * $this->delta->delta($synapse);
+        $weightChange = $delta * $visitor->trainset->output($neuron);
+
+        $weight = $weight + $weightChange;
+
+        return $visitor->set($synapse, new Synapse($visitor->get($neuron), $weight));
+    }
+
+    private function set($key, $value)
+    {
+        if ($this->objects->contains($key)) {
+            return $this;
+        }
+
+        $objects = clone $this->objects;
+        $objects->attach($key, $value);
+
+        return new self($this->delta, $this->trainset, $this->factor, $objects);
+    }
+
+    private function get($key)
+    {
+        if ($this->objects->contains($key)) {
+            return $this->objects[$key];
+        }
+
+        return $key;
+    }
+
+    private function getAll($keys)
+    {
+        $result = array();
+
+        foreach ($keys as $key) {
+            $result[] = $this->get($key);
+        }
+
+        return $result;
     }
 }

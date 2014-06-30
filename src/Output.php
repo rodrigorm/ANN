@@ -2,10 +2,9 @@
 
 namespace Ann;
 
-use \Ann\Peripheral;
 use \SplObjectStorage;
 
-class Input
+class Output
 {
     private $storage;
 
@@ -14,15 +13,32 @@ class Input
         $this->storage = $storage ? $storage : new SplObjectStorage();
     }
 
-    public function set(Peripheral $key, $value)
+    public function set($key, $value)
     {
         $storage = clone $this->storage;
         $storage->attach($key, $value);
         return new self($storage);
     }
 
-    public function get(Peripheral $key)
+    public function get($key)
     {
         return $this->storage[$key];
     }
+
+    public function toArray()
+    {
+        $result = array();
+
+        foreach ($this->storage as $key) {
+            $result[] = $this->storage[$key];
+        }
+
+        return $result;
+    }
+
+    public function contains($key)
+    {
+        return $this->storage->contains($key);
+    }
 }
+

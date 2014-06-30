@@ -42,6 +42,6 @@ echo "\n";
 
 foreach ($data  as $tuple) {
     $input = array($tuple[0], $tuple[1]);
-    $response = $network->calculate($input);
+    $response = $network->calculate($input)->toArray();
     echo $tuple[0], ' XOR ', $tuple[1], ' = ', $tuple[2], ', output = ', $response[0],', error = ', abs($tuple[2] - $response[0]), "\n";
 }
