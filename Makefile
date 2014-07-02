@@ -70,6 +70,20 @@ phpunit : $(logsdir)/junit.xml
 $(logsdir)/junit.xml : $(PHPUNIT) $(logsdir) $(SRC) $(TESTS)
 	$(PHPUNIT)
 
+trace : $(logsdir)/trace.xt
+$(logsdir)/trace.xt : $(PHPUNIT) $(logsdir) $(SRC) $(TESTS)
+	php \
+		-dmemory_limit=-1 \
+		-dxdebug.auto_trace=1 \
+		-dxdebug.trace_output_dir=$(realpath $(dir $@))\
+		-dxdebug.trace_output_name=$(basename $(notdir $@))\
+		-dxdebug.trace_format=1 \
+		-dxdebug.collect_assignments=0 \
+		-dxdebug.collect_includes=1 \
+		-dxdebug.collect_params=1 \
+		-dxdebug.collect_return=0 \
+		`which $(PHPUNIT)`
+
 $(PHPLOC) $(PDEPEND) $(PHPMD) $(PHPCS) $(PHPCPD) $(PHPUNIT) : composer.lock
 composer.lock : composer.json
 	composer install
