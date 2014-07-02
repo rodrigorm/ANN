@@ -1,6 +1,6 @@
 <?php
 
-require 'vendor/autoload.php';
+namespace Ann;
 
 use \Ann\Neuron;
 use \Ann\Dendrite;
@@ -10,7 +10,7 @@ use \Ann\Input;
 use \Ann\BackPropagation;
 use \Ann\OutputFunction\Linear;
 
-class NeuronTest extends PHPUnit_Framework_TestCase
+class NeuronTest extends \PHPUnit_Framework_TestCase
 {
     public function testSingleNetwork()
     {
@@ -34,7 +34,8 @@ class NeuronTest extends PHPUnit_Framework_TestCase
 
         $data = $data->set($input, 1.0);
 
-        $this->assertEquals(1.0, $output->output($data));
+        $activation = new Activation($data, new Output());
+        $result = $output->output($activation);
+        $this->assertEquals(1.0, $result->output($output));
     }
 }
-
