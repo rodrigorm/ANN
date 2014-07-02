@@ -5,7 +5,7 @@ A simple example to learn how a artificial neural network works.
 ## Project Setup
 
 ```bash
-$ php dump-autoload
+$ composer dump-autoload
 ```
 
 ## Usage
