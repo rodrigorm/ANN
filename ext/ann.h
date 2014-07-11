@@ -6,5 +6,6 @@
 
 #include "ann/outputfunction.h"
 #include "ann/visitee.h"
+#include "ann/visitor.h"
 
 #endif

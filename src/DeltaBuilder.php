@@ -42,7 +42,7 @@ class DeltaBuilder implements Visitor
         return $delta;
     }
 
-    public function visitNetwork(Network $network, array $inputs, array $outputs)
+    public function visitNetwork(/*Network*/ $network, /*array*/ $inputs, /*array*/ $outputs)
     {
         $visitor = $this;
 
@@ -53,12 +53,12 @@ class DeltaBuilder implements Visitor
         return $visitor;
     }
 
-    public function visitNeuron(Neuron $neuron, Branch $branch, OutputFunction $function)
+    public function visitNeuron(/*Neuron*/ $neuron, /*Branch*/ $branch, /*OutputFunction*/ $function)
     {
         return $branch->accept($this->push($neuron))->pop();
     }
 
-    public function visitDendrite(Dendrite $dendrite, array $synapses)
+    public function visitDendrite(/*Dendrite*/ $dendrite, /*array*/ $synapses)
     {
         $visitor = $this;
 
@@ -69,17 +69,17 @@ class DeltaBuilder implements Visitor
         return $visitor;
     }
 
-    public function visitSynapse(Synapse $synapse, Neuron $neuron, $weight)
+    public function visitSynapse(/*Synapse*/ $synapse, /*Neuron*/ $neuron, $weight)
     {
         return $neuron->accept($this->connect($neuron, $synapse));
     }
 
-    public function visitPeripheral(Peripheral $peripheral)
+    public function visitPeripheral(/*Peripheral*/ $peripheral)
     {
         return $this;
     }
 
-    public function visitBias(Bias $bias)
+    public function visitBias(/*Bias*/ $bias)
     {
         return $this;
     }

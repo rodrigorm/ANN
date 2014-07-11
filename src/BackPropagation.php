@@ -29,7 +29,7 @@ class BackPropagation implements Visitor
         return $network->accept($this)->get($network);
     }
 
-    public function visitNetwork(Network $network, array $inputs, array $outputs)
+    public function visitNetwork(/*Network*/ $network, /*array*/ $inputs, /*array*/ $outputs)
     {
         $visitor = $this;
 
@@ -40,23 +40,23 @@ class BackPropagation implements Visitor
         return $visitor->set($network, new Network($inputs, $visitor->getAll($outputs)));
     }
 
-    public function visitNeuron(Neuron $neuron, Branch $branch, OutputFunction $function)
+    public function visitNeuron(/*Neuron*/ $neuron, /*Branch*/ $branch, /*OutputFunction*/ $function)
     {
         $visitor = $branch->accept($this);
         return $visitor->set($neuron, new Neuron($visitor->get($branch), $function));
     }
 
-    public function visitPeripheral(Peripheral $peripheral)
+    public function visitPeripheral(/*Peripheral*/ $peripheral)
     {
         return $this;
     }
 
-    public function visitBias(Bias $bias)
+    public function visitBias(/*Bias*/ $bias)
     {
         return $this;
     }
 
-    public function visitDendrite(Dendrite $dendrite, array $synapses)
+    public function visitDendrite(/*Dendrite*/ $dendrite, /*array*/ $synapses)
     {
         $visitor = $this;
 
@@ -67,7 +67,7 @@ class BackPropagation implements Visitor
         return $visitor->set($dendrite, new Dendrite($visitor->getAll($synapses)));
     }
 
-    public function visitSynapse(Synapse $synapse, Neuron $neuron, $weight)
+    public function visitSynapse(/*Synapse*/ $synapse, /*Neuron*/ $neuron, $weight)
     {
         $visitor = $neuron->accept($this);
 
