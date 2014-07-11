@@ -2,8 +2,7 @@
 
 namespace Ann;
 
-use \Ann\Input;
-use \Ann\BackPropagation;
+use \Ann\Activation;
 use \Ann\Visitee;
 
 interface Branch extends Visitee

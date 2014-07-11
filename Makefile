@@ -1,10 +1,12 @@
 builddir := build
 srcdir := src
+extdir := ann
 testsdir := tests
 logsdir := $(builddir)/logs
 pdependdir := $(builddir)/pdepend
 
 SRC := $(shell find "$(srcdir)" -type f -name "*.php")
+EXT := $(shell find "$(extdir)" -type f -name "*.zep")
 TESTS := $(shell find $(testsdir) -type f -name "*.php")
 
 BIN := vendor/bin
@@ -14,6 +16,7 @@ PHPMD := $(BIN)/phpmd
 PHPCS := $(BIN)/phpcs
 PHPCPD := $(BIN)/phpcpd
 PHPUNIT := $(BIN)/phpunit
+ZEPHIR := $(BIN)/zephir
 
 .PHONY : build clean
 
@@ -24,6 +27,7 @@ clean :
 	rm -rf "$(builddir)/coverage"
 	rm -rf "$(logsdir)"
 	rm -rf "$(pdependdir)"
+	rm -rf "ext/modules/ann.so"
 
 # Perform syntax check of sourcecode files
 lint : $(logsdir)/lint.log
@@ -66,9 +70,9 @@ $(logsdir)/pmd-cpd.xml : $(PHPCPD) $(logsdir) $(SRC)
 	$(PHPCPD) --log-pmd "$(logsdir)/pmd-cpd.xml" "$(srcdir)"
 
 # Run unit tests with PHPUnit
-phpunit : $(logsdir)/junit.xml
+phpunit : $(logsdir)/junit.xml ext/modules/ann.so
 $(logsdir)/junit.xml : $(PHPUNIT) $(logsdir) $(SRC) $(TESTS)
-	$(PHPUNIT)
+	$(PHPUNIT) -d "extension=ext/modules/ann.so"
 
 trace : $(logsdir)/trace.xt
 $(logsdir)/trace.xt : $(PHPUNIT) $(logsdir) $(SRC) $(TESTS)
@@ -84,10 +88,15 @@ $(logsdir)/trace.xt : $(PHPUNIT) $(logsdir) $(SRC) $(TESTS)
 		-dxdebug.collect_return=0 \
 		`which $(PHPUNIT)`
 
-$(PHPLOC) $(PDEPEND) $(PHPMD) $(PHPCS) $(PHPCPD) $(PHPUNIT) : composer.lock
+extension : ext/modules/ann.so
+ext/modules/ann.so : $(ZEPHIR) $(EXT)
+	$(ZEPHIR) build
+
+$(PHPLOC) $(PDEPEND) $(PHPMD) $(PHPCS) $(PHPCPD) $(PHPUNIT) $(ZEPHIR) : composer.lock
 composer.lock : composer.json
-	composer install
-	composer update
+	composer install && \
+		composer update && \
+		touch $@ # Force update when there is nothing to install
 
 $(logsdir) : $(logsdir)/.done
 $(pdependdir) : $(pdependdir)/.done
