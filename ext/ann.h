@@ -5,5 +5,6 @@
 #define ZEPHIR_CLASS_ENTRIES_H
 
 #include "ann/outputfunction.h"
+#include "ann/visitee.h"
 
 #endif

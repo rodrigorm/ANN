@@ -39,7 +39,7 @@ class Synapse implements Visitee
         return $activation->output($this->neuron) * $this->weight;
     }
 
-    public function accept(Visitor $visitor)
+    public function accept(/*Visitor*/ $visitor)
     {
         return $visitor->visitSynapse($this, $this->neuron, $this->weight);
     }

@@ -35,7 +35,7 @@ class Neuron implements Visitee
         return $this->outputFunction->derivative($activation->output($this->branch));
     }
 
-    public function accept(Visitor $visitor)
+    public function accept(/*Visitor*/ $visitor)
     {
         return $visitor->visitNeuron($this, $this->branch, $this->outputFunction);
     }

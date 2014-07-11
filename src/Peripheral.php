@@ -18,7 +18,7 @@ class Peripheral implements Branch
         return $activation->input($this);
     }
 
-    public function accept(Visitor $visitor)
+    public function accept(/*Visitor*/ $visitor)
     {
         return $visitor->visitPeripheral($this);
     }

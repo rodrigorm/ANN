@@ -18,7 +18,7 @@ class Bias implements Branch
         return 1.0;
     }
 
-    public function accept(Visitor $visitor)
+    public function accept(/*Visitor*/ $visitor)
     {
         return $visitor->visitBias($this);
     }

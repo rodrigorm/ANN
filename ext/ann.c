@@ -25,6 +25,7 @@
 #include "kernel/memory.h"
 
 zend_class_entry *ann_outputfunction_ce;
+zend_class_entry *ann_visitee_ce;
 
 ZEND_DECLARE_MODULE_GLOBALS(ann)
 
@@ -195,6 +196,7 @@ static PHP_MINIT_FUNCTION(ann)
 #endif
 
 	ZEPHIR_INIT(Ann_OutputFunction);
+	ZEPHIR_INIT(Ann_Visitee);
 
 #if PHP_VERSION_ID < 50500
 	setlocale(LC_ALL, old_lc_all);

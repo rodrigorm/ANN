@@ -36,7 +36,7 @@ class Dendrite implements Branch
         return $result;
     }
 
-    public function accept(Visitor $visitor)
+    public function accept(/*Visitor*/ $visitor)
     {
         return $visitor->visitDendrite($this, $this->synapses);
     }
