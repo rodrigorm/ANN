@@ -4,6 +4,7 @@
 #ifndef ZEPHIR_CLASS_ENTRIES_H
 #define ZEPHIR_CLASS_ENTRIES_H
 
+#include "ann/branch.h"
 #include "ann/outputfunction.h"
 #include "ann/visitee.h"
 #include "ann/visitor.h"

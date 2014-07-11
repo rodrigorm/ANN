@@ -8,7 +8,7 @@ use \Ann\Visitor;
 
 class Peripheral implements Branch
 {
-    public function output(Activation $activation)
+    public function output(/*Activation*/ $activation)
     {
         return $activation->activate($this);
     }

@@ -16,7 +16,7 @@ class Dendrite implements Branch
         $this->synapses = $synapses;
     }
 
-    public function output(Activation $activation)
+    public function output(/*Activation*/ $activation)
     {
         foreach ($this->synapses as $synapse) {
             $activation = $synapse->output($activation);
