@@ -11,6 +11,7 @@
 #include "ann/delta.h"
 #include "ann/dendrite.h"
 #include "ann/network.h"
+#include "ann/neuron.h"
 #include "ann/outputfunction.h"
 #include "ann/outputfunction/linear.h"
 #include "ann/outputfunction/threshold.h"

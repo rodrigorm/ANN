@@ -276,9 +276,9 @@ PHP_METHOD(Ann_Network, response) {
 
 PHP_METHOD(Ann_Network, create) {
 
-	zephir_fcall_cache_entry *_20 = NULL;
+	zephir_fcall_cache_entry *_20 = NULL, *_21 = NULL;
 	zephir_nts_static zephir_fcall_cache_entry *_18 = NULL;
-	zend_class_entry *_8, *_14, *_21;
+	zend_class_entry *_8, *_14;
 	int _5, ZEPHIR_LAST_CALL_STATUS;
 	zend_bool _4, _7;
 	HashTable *_1, *_11;
@@ -408,12 +408,9 @@ PHP_METHOD(Ann_Network, create) {
 					zephir_array_append(&inputs, branch, PH_SEPARATE);
 				}
 				ZEPHIR_INIT_NVAR(neuron);
-				_21 = zend_fetch_class(SL("Ann\\Neuron"), ZEND_FETCH_CLASS_AUTO TSRMLS_CC);
-				object_init_ex(neuron, _21);
-				if (zephir_has_constructor(neuron TSRMLS_CC)) {
-					ZEPHIR_CALL_METHOD(NULL, neuron, "__construct", NULL, branch, function);
-					zephir_check_call_status();
-				}
+				object_init_ex(neuron, ann_neuron_ce);
+				ZEPHIR_CALL_METHOD(NULL, neuron, "__construct", &_21, branch, function);
+				zephir_check_call_status();
 				ZEPHIR_OBS_NVAR(layer);
 				zephir_array_fetch(&layer, layers, i, PH_NOISY TSRMLS_CC);
 				zephir_array_update_zval(&layer, j, &neuron, PH_COPY | PH_SEPARATE);

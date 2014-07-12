@@ -154,16 +154,15 @@ PHP_METHOD(Ann_BackPropagation, visitNetwork) {
 
 PHP_METHOD(Ann_BackPropagation, visitNeuron) {
 
-	zend_class_entry *_1;
 	int ZEPHIR_LAST_CALL_STATUS;
-	zval *neuron, *branch, *function, *visitor = NULL, *_0, *_2 = NULL;
+	zval *neuron, *branch, *function, *visitor = NULL, *_0, *_1 = NULL;
 
 	ZEPHIR_MM_GROW();
 	zephir_fetch_params(1, 3, 0, &neuron, &branch, &function);
 
 
 
-	if (!(zephir_is_instance_of(neuron, SL("Ann\\Neuron") TSRMLS_CC))) {
+	if (!(zephir_instance_of_ev(neuron, ann_neuron_ce TSRMLS_CC))) {
 		ZEPHIR_THROW_EXCEPTION_DEBUG_STR(spl_ce_InvalidArgumentException, "Parameter 'neuron' must be an instance of 'Ann\\Neuron'", "", 0);
 		return;
 	}
@@ -178,14 +177,11 @@ PHP_METHOD(Ann_BackPropagation, visitNeuron) {
 	ZEPHIR_CALL_METHOD(&visitor, branch, "accept", NULL, this_ptr);
 	zephir_check_call_status();
 	ZEPHIR_INIT_VAR(_0);
-	_1 = zend_fetch_class(SL("Ann\\Neuron"), ZEND_FETCH_CLASS_AUTO TSRMLS_CC);
-	object_init_ex(_0, _1);
-	if (zephir_has_constructor(_0 TSRMLS_CC)) {
-		ZEPHIR_CALL_METHOD(&_2, visitor, "get", NULL, branch);
-		zephir_check_call_status();
-		ZEPHIR_CALL_METHOD(NULL, _0, "__construct", NULL, _2, function);
-		zephir_check_call_status();
-	}
+	object_init_ex(_0, ann_neuron_ce);
+	ZEPHIR_CALL_METHOD(&_1, visitor, "get", NULL, branch);
+	zephir_check_call_status();
+	ZEPHIR_CALL_METHOD(NULL, _0, "__construct", NULL, _1, function);
+	zephir_check_call_status();
 	ZEPHIR_RETURN_CALL_METHOD(visitor, "set", NULL, neuron, _0);
 	zephir_check_call_status();
 	RETURN_MM();
@@ -281,7 +277,7 @@ PHP_METHOD(Ann_BackPropagation, visitSynapse) {
 		ZEPHIR_THROW_EXCEPTION_DEBUG_STR(spl_ce_InvalidArgumentException, "Parameter 'synapse' must be an instance of 'Ann\\Synapse'", "", 0);
 		return;
 	}
-	if (!(zephir_is_instance_of(neuron, SL("Ann\\Neuron") TSRMLS_CC))) {
+	if (!(zephir_instance_of_ev(neuron, ann_neuron_ce TSRMLS_CC))) {
 		ZEPHIR_THROW_EXCEPTION_DEBUG_STR(spl_ce_InvalidArgumentException, "Parameter 'neuron' must be an instance of 'Ann\\Neuron'", "", 0);
 		return;
 	}
