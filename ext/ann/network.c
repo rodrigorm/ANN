@@ -276,14 +276,14 @@ PHP_METHOD(Ann_Network, response) {
 
 PHP_METHOD(Ann_Network, create) {
 
-	zephir_fcall_cache_entry *_21 = NULL;
-	zephir_nts_static zephir_fcall_cache_entry *_19 = NULL;
-	zend_class_entry *_8, *_9, *_15, *_22;
+	zephir_fcall_cache_entry *_20 = NULL;
+	zephir_nts_static zephir_fcall_cache_entry *_18 = NULL;
+	zend_class_entry *_8, *_14, *_21;
 	int _5, ZEPHIR_LAST_CALL_STATUS;
 	zend_bool _4, _7;
-	HashTable *_1, *_12;
-	HashPosition _0, _11;
-	zval *nodes_param = NULL, *inputs, *layer = NULL, *layers, *count = NULL, *i = NULL, *j = NULL, *branch = NULL, *function = NULL, *synapses = NULL, *neuron = NULL, **_2, *_3 = NULL, *_6 = NULL, *_10, **_13, *_14 = NULL, _16 = zval_used_for_init, _17 = zval_used_for_init, *_18 = NULL, *_20 = NULL;
+	HashTable *_1, *_11;
+	HashPosition _0, _10;
+	zval *nodes_param = NULL, *inputs, *layer = NULL, *layers, *count = NULL, *i = NULL, *j = NULL, *branch = NULL, *function = NULL, *synapses = NULL, *neuron = NULL, **_2, *_3 = NULL, *_6 = NULL, *_9, **_12, *_13 = NULL, _15 = zval_used_for_init, _16 = zval_used_for_init, *_17 = NULL, *_19 = NULL;
 	zval *nodes = NULL;
 
 	ZEPHIR_MM_GROW();
@@ -330,15 +330,14 @@ PHP_METHOD(Ann_Network, create) {
 					continue;
 				}
 				ZEPHIR_INIT_NVAR(branch);
-				_8 = zend_fetch_class(SL("Ann\\Peripheral"), ZEND_FETCH_CLASS_AUTO TSRMLS_CC);
-				object_init_ex(branch, _8);
+				object_init_ex(branch, ann_peripheral_ce);
 				if (zephir_has_constructor(branch TSRMLS_CC)) {
 					ZEPHIR_CALL_METHOD(NULL, branch, "__construct", NULL);
 					zephir_check_call_status();
 				}
 				ZEPHIR_INIT_NVAR(function);
-				_9 = zend_fetch_class(SL("Ann\\OutputFunction\\Sigmoid"), ZEND_FETCH_CLASS_AUTO TSRMLS_CC);
-				object_init_ex(function, _9);
+				_8 = zend_fetch_class(SL("Ann\\OutputFunction\\Sigmoid"), ZEND_FETCH_CLASS_AUTO TSRMLS_CC);
+				object_init_ex(function, _8);
 				if (zephir_has_constructor(function TSRMLS_CC)) {
 					ZEPHIR_CALL_METHOD(NULL, function, "__construct", NULL);
 					zephir_check_call_status();
@@ -375,42 +374,42 @@ PHP_METHOD(Ann_Network, create) {
 					} else {
 						ZEPHIR_INIT_NVAR(synapses);
 						array_init(synapses);
-						zephir_array_fetch_long(&_10, layers, (zephir_get_numberval(i) - 1), PH_NOISY | PH_READONLY TSRMLS_CC);
-						zephir_is_iterable(_10, &_12, &_11, 0, 0);
+						zephir_array_fetch_long(&_9, layers, (zephir_get_numberval(i) - 1), PH_NOISY | PH_READONLY TSRMLS_CC);
+						zephir_is_iterable(_9, &_11, &_10, 0, 0);
 						for (
-						  ; zephir_hash_get_current_data_ex(_12, (void**) &_13, &_11) == SUCCESS
-						  ; zephir_hash_move_forward_ex(_12, &_11)
+						  ; zephir_hash_get_current_data_ex(_11, (void**) &_12, &_10) == SUCCESS
+						  ; zephir_hash_move_forward_ex(_11, &_10)
 						) {
-							ZEPHIR_GET_HVALUE(neuron, _13);
-							ZEPHIR_INIT_LNVAR(_14);
-							_15 = zend_fetch_class(SL("Ann\\Synapse"), ZEND_FETCH_CLASS_AUTO TSRMLS_CC);
-							object_init_ex(_14, _15);
-							if (zephir_has_constructor(_14 TSRMLS_CC)) {
+							ZEPHIR_GET_HVALUE(neuron, _12);
+							ZEPHIR_INIT_LNVAR(_13);
+							_14 = zend_fetch_class(SL("Ann\\Synapse"), ZEND_FETCH_CLASS_AUTO TSRMLS_CC);
+							object_init_ex(_13, _14);
+							if (zephir_has_constructor(_13 TSRMLS_CC)) {
+								ZEPHIR_SINIT_NVAR(_15);
+								ZVAL_LONG(&_15, 0);
 								ZEPHIR_SINIT_NVAR(_16);
-								ZVAL_LONG(&_16, 0);
-								ZEPHIR_SINIT_NVAR(_17);
-								ZVAL_LONG(&_17, 100);
-								ZEPHIR_CALL_FUNCTION(&_18, "rand", &_19, &_16, &_17);
+								ZVAL_LONG(&_16, 100);
+								ZEPHIR_CALL_FUNCTION(&_17, "rand", &_18, &_15, &_16);
 								zephir_check_call_status();
-								ZEPHIR_INIT_NVAR(_20);
-								ZVAL_DOUBLE(_20, (-1.0 + (zephir_get_numberval(_18) / 50.0)));
-								ZEPHIR_CALL_METHOD(NULL, _14, "__construct", NULL, neuron, _20);
+								ZEPHIR_INIT_NVAR(_19);
+								ZVAL_DOUBLE(_19, (-1.0 + (zephir_get_numberval(_17) / 50.0)));
+								ZEPHIR_CALL_METHOD(NULL, _13, "__construct", NULL, neuron, _19);
 								zephir_check_call_status();
 							}
-							zephir_array_append(&synapses, _14, PH_SEPARATE);
+							zephir_array_append(&synapses, _13, PH_SEPARATE);
 						}
 						ZEPHIR_INIT_NVAR(branch);
 						object_init_ex(branch, ann_dendrite_ce);
-						ZEPHIR_CALL_METHOD(NULL, branch, "__construct", &_21, synapses);
+						ZEPHIR_CALL_METHOD(NULL, branch, "__construct", &_20, synapses);
 						zephir_check_call_status();
 					}
 				}
-				if (zephir_is_instance_of(branch, SL("Ann\\Peripheral") TSRMLS_CC)) {
+				if (zephir_instance_of_ev(branch, ann_peripheral_ce TSRMLS_CC)) {
 					zephir_array_append(&inputs, branch, PH_SEPARATE);
 				}
 				ZEPHIR_INIT_NVAR(neuron);
-				_22 = zend_fetch_class(SL("Ann\\Neuron"), ZEND_FETCH_CLASS_AUTO TSRMLS_CC);
-				object_init_ex(neuron, _22);
+				_21 = zend_fetch_class(SL("Ann\\Neuron"), ZEND_FETCH_CLASS_AUTO TSRMLS_CC);
+				object_init_ex(neuron, _21);
 				if (zephir_has_constructor(neuron TSRMLS_CC)) {
 					ZEPHIR_CALL_METHOD(NULL, neuron, "__construct", NULL, branch, function);
 					zephir_check_call_status();
@@ -423,8 +422,8 @@ PHP_METHOD(Ann_Network, create) {
 		}
 	}
 	object_init_ex(return_value, ann_network_ce);
-	zephir_array_fetch_long(&_10, layers, (zephir_fast_count_int(layers TSRMLS_CC) - 1), PH_NOISY | PH_READONLY TSRMLS_CC);
-	ZEPHIR_CALL_METHOD(NULL, return_value, "__construct", NULL, inputs, _10);
+	zephir_array_fetch_long(&_9, layers, (zephir_fast_count_int(layers TSRMLS_CC) - 1), PH_NOISY | PH_READONLY TSRMLS_CC);
+	ZEPHIR_CALL_METHOD(NULL, return_value, "__construct", NULL, inputs, _9);
 	zephir_check_call_status();
 	RETURN_MM();
 

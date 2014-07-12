@@ -52,7 +52,7 @@ class Network implements Visitee
         return $activation;
     }
 
-    public function accept(/*Visitor*/ $visitor)
+    public function accept(Visitor $visitor)
     {
         return $visitor->visitNetwork($this, $this->inputs, $this->outputs);
     }

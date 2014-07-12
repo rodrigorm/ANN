@@ -200,7 +200,7 @@ PHP_METHOD(Ann_BackPropagation, visitPeripheral) {
 
 
 
-	if (!(zephir_is_instance_of(peripheral, SL("Ann\\Peripheral") TSRMLS_CC))) {
+	if (!(zephir_instance_of_ev(peripheral, ann_peripheral_ce TSRMLS_CC))) {
 		ZEPHIR_THROW_EXCEPTION_DEBUG_STRW(spl_ce_InvalidArgumentException, "Parameter 'peripheral' must be an instance of 'Ann\\Peripheral'", "", 0);
 		return;
 	}
