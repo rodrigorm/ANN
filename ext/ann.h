@@ -6,6 +6,8 @@
 
 #include "ann/branch.h"
 #include "ann/outputfunction.h"
+#include "ann/outputfunction/linear.h"
+#include "ann/outputfunction/threshold.h"
 #include "ann/visitee.h"
 #include "ann/visitor.h"
 
