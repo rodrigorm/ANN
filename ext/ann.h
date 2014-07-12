@@ -9,6 +9,7 @@
 #include "ann/bias.h"
 #include "ann/branch.h"
 #include "ann/delta.h"
+#include "ann/dendrite.h"
 #include "ann/network.h"
 #include "ann/outputfunction.h"
 #include "ann/outputfunction/linear.h"

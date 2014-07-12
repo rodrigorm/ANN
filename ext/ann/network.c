@@ -276,8 +276,9 @@ PHP_METHOD(Ann_Network, response) {
 
 PHP_METHOD(Ann_Network, create) {
 
+	zephir_fcall_cache_entry *_21 = NULL;
 	zephir_nts_static zephir_fcall_cache_entry *_19 = NULL;
-	zend_class_entry *_8, *_9, *_15, *_21, *_22;
+	zend_class_entry *_8, *_9, *_15, *_22;
 	int _5, ZEPHIR_LAST_CALL_STATUS;
 	zend_bool _4, _7;
 	HashTable *_1, *_12;
@@ -399,12 +400,9 @@ PHP_METHOD(Ann_Network, create) {
 							zephir_array_append(&synapses, _14, PH_SEPARATE);
 						}
 						ZEPHIR_INIT_NVAR(branch);
-						_21 = zend_fetch_class(SL("Ann\\Dendrite"), ZEND_FETCH_CLASS_AUTO TSRMLS_CC);
-						object_init_ex(branch, _21);
-						if (zephir_has_constructor(branch TSRMLS_CC)) {
-							ZEPHIR_CALL_METHOD(NULL, branch, "__construct", NULL, synapses);
-							zephir_check_call_status();
-						}
+						object_init_ex(branch, ann_dendrite_ce);
+						ZEPHIR_CALL_METHOD(NULL, branch, "__construct", &_21, synapses);
+						zephir_check_call_status();
 					}
 				}
 				if (zephir_is_instance_of(branch, SL("Ann\\Peripheral") TSRMLS_CC)) {

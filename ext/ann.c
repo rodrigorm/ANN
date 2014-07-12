@@ -32,6 +32,7 @@ zend_class_entry *ann_activation_ce;
 zend_class_entry *ann_backpropagation_ce;
 zend_class_entry *ann_bias_ce;
 zend_class_entry *ann_delta_ce;
+zend_class_entry *ann_dendrite_ce;
 zend_class_entry *ann_network_ce;
 zend_class_entry *ann_outputfunction_linear_ce;
 zend_class_entry *ann_outputfunction_threshold_ce;
@@ -212,6 +213,7 @@ static PHP_MINIT_FUNCTION(ann)
 	ZEPHIR_INIT(Ann_BackPropagation);
 	ZEPHIR_INIT(Ann_Bias);
 	ZEPHIR_INIT(Ann_Delta);
+	ZEPHIR_INIT(Ann_Dendrite);
 	ZEPHIR_INIT(Ann_Network);
 	ZEPHIR_INIT(Ann_OutputFunction_Linear);
 	ZEPHIR_INIT(Ann_OutputFunction_Threshold);

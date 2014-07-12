@@ -226,7 +226,6 @@ PHP_METHOD(Ann_BackPropagation, visitBias) {
 
 PHP_METHOD(Ann_BackPropagation, visitDendrite) {
 
-	zend_class_entry *_5;
 	int ZEPHIR_LAST_CALL_STATUS;
 	HashTable *_1;
 	HashPosition _0;
@@ -239,7 +238,7 @@ PHP_METHOD(Ann_BackPropagation, visitDendrite) {
 	zephir_get_arrval(synapses, synapses_param);
 
 
-	if (!(zephir_is_instance_of(dendrite, SL("Ann\\Dendrite") TSRMLS_CC))) {
+	if (!(zephir_instance_of_ev(dendrite, ann_dendrite_ce TSRMLS_CC))) {
 		ZEPHIR_THROW_EXCEPTION_DEBUG_STR(spl_ce_InvalidArgumentException, "Parameter 'dendrite' must be an instance of 'Ann\\Dendrite'", "", 0);
 		return;
 	}
@@ -255,14 +254,11 @@ PHP_METHOD(Ann_BackPropagation, visitDendrite) {
 		ZEPHIR_CPY_WRT(visitor, _3);
 	}
 	ZEPHIR_INIT_VAR(_4);
-	_5 = zend_fetch_class(SL("Ann\\Dendrite"), ZEND_FETCH_CLASS_AUTO TSRMLS_CC);
-	object_init_ex(_4, _5);
-	if (zephir_has_constructor(_4 TSRMLS_CC)) {
-		ZEPHIR_CALL_METHOD(&_3, visitor, "getall", NULL, synapses);
-		zephir_check_call_status();
-		ZEPHIR_CALL_METHOD(NULL, _4, "__construct", NULL, _3);
-		zephir_check_call_status();
-	}
+	object_init_ex(_4, ann_dendrite_ce);
+	ZEPHIR_CALL_METHOD(&_3, visitor, "getall", NULL, synapses);
+	zephir_check_call_status();
+	ZEPHIR_CALL_METHOD(NULL, _4, "__construct", NULL, _3);
+	zephir_check_call_status();
 	ZEPHIR_RETURN_CALL_METHOD(visitor, "set", NULL, dendrite, _4);
 	zephir_check_call_status();
 	RETURN_MM();
