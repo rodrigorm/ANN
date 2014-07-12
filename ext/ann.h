@@ -4,6 +4,7 @@
 #ifndef ZEPHIR_CLASS_ENTRIES_H
 #define ZEPHIR_CLASS_ENTRIES_H
 
+#include "ann/activation.h"
 #include "ann/branch.h"
 #include "ann/outputfunction.h"
 #include "ann/outputfunction/linear.h"

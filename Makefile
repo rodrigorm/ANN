@@ -4,6 +4,7 @@ extdir := ann
 testsdir := tests
 logsdir := $(builddir)/logs
 pdependdir := $(builddir)/pdepend
+extension := ext/modules/ann.so
 
 SRC := $(shell find "$(srcdir)" -type f -name "*.php")
 EXT := $(shell find "$(extdir)" -type f -name "*.zep")
@@ -27,7 +28,7 @@ clean :
 	rm -rf "$(builddir)/coverage"
 	rm -rf "$(logsdir)"
 	rm -rf "$(pdependdir)"
-	rm -rf "ext/modules/ann.so"
+	rm -rf "$(extension)"
 
 # Perform syntax check of sourcecode files
 lint : $(logsdir)/lint.log
@@ -70,9 +71,9 @@ $(logsdir)/pmd-cpd.xml : $(PHPCPD) $(logsdir) $(SRC)
 	$(PHPCPD) --log-pmd "$(logsdir)/pmd-cpd.xml" "$(srcdir)"
 
 # Run unit tests with PHPUnit
-phpunit : $(logsdir)/junit.xml ext/modules/ann.so
-$(logsdir)/junit.xml : $(PHPUNIT) $(logsdir) $(SRC) $(TESTS)
-	$(PHPUNIT) -d "extension=ext/modules/ann.so"
+phpunit : $(logsdir)/junit.xml
+$(logsdir)/junit.xml : $(PHPUNIT) $(logsdir) $(SRC) $(TESTS) $(extension)
+	php -d "extension=$(extension)" $(PHPUNIT)
 
 trace : $(logsdir)/trace.xt
 $(logsdir)/trace.xt : $(PHPUNIT) $(logsdir) $(SRC) $(TESTS)
@@ -88,8 +89,8 @@ $(logsdir)/trace.xt : $(PHPUNIT) $(logsdir) $(SRC) $(TESTS)
 		-dxdebug.collect_return=0 \
 		`which $(PHPUNIT)`
 
-extension : ext/modules/ann.so
-ext/modules/ann.so : $(ZEPHIR) $(EXT)
+extension : $(extension)
+$(extension) : $(ZEPHIR) $(EXT)
 	$(ZEPHIR) build
 
 $(PHPLOC) $(PDEPEND) $(PHPMD) $(PHPCS) $(PHPCPD) $(PHPUNIT) $(ZEPHIR) : composer.lock
