@@ -99,7 +99,7 @@ PHP_METHOD(Ann_BackPropagation, teach) {
 
 
 
-	if (!(zephir_is_instance_of(network, SL("Ann\\Network") TSRMLS_CC))) {
+	if (!(zephir_instance_of_ev(network, ann_network_ce TSRMLS_CC))) {
 		ZEPHIR_THROW_EXCEPTION_DEBUG_STR(spl_ce_InvalidArgumentException, "Parameter 'network' must be an instance of 'Ann\\Network'", "", 0);
 		return;
 	}
@@ -113,12 +113,11 @@ PHP_METHOD(Ann_BackPropagation, teach) {
 
 PHP_METHOD(Ann_BackPropagation, visitNetwork) {
 
-	zend_class_entry *_4;
 	int ZEPHIR_LAST_CALL_STATUS;
 	HashTable *_1;
 	HashPosition _0;
 	zval *inputs = NULL, *outputs = NULL;
-	zval *network, *inputs_param = NULL, *outputs_param = NULL, *visitor = NULL, *neuron = NULL, **_2, *_3, *_5 = NULL;
+	zval *network, *inputs_param = NULL, *outputs_param = NULL, *visitor = NULL, *neuron = NULL, **_2, *_3, *_4 = NULL;
 
 	ZEPHIR_MM_GROW();
 	zephir_fetch_params(1, 3, 0, &network, &inputs_param, &outputs_param);
@@ -127,7 +126,7 @@ PHP_METHOD(Ann_BackPropagation, visitNetwork) {
 	zephir_get_arrval(outputs, outputs_param);
 
 
-	if (!(zephir_is_instance_of(network, SL("Ann\\Network") TSRMLS_CC))) {
+	if (!(zephir_instance_of_ev(network, ann_network_ce TSRMLS_CC))) {
 		ZEPHIR_THROW_EXCEPTION_DEBUG_STR(spl_ce_InvalidArgumentException, "Parameter 'network' must be an instance of 'Ann\\Network'", "", 0);
 		return;
 	}
@@ -142,14 +141,11 @@ PHP_METHOD(Ann_BackPropagation, visitNetwork) {
 		zephir_check_call_status();
 	}
 	ZEPHIR_INIT_VAR(_3);
-	_4 = zend_fetch_class(SL("Ann\\Network"), ZEND_FETCH_CLASS_AUTO TSRMLS_CC);
-	object_init_ex(_3, _4);
-	if (zephir_has_constructor(_3 TSRMLS_CC)) {
-		ZEPHIR_CALL_METHOD(&_5, visitor, "getall", NULL, outputs);
-		zephir_check_call_status();
-		ZEPHIR_CALL_METHOD(NULL, _3, "__construct", NULL, inputs, _5);
-		zephir_check_call_status();
-	}
+	object_init_ex(_3, ann_network_ce);
+	ZEPHIR_CALL_METHOD(&_4, visitor, "getall", NULL, outputs);
+	zephir_check_call_status();
+	ZEPHIR_CALL_METHOD(NULL, _3, "__construct", NULL, inputs, _4);
+	zephir_check_call_status();
 	ZEPHIR_RETURN_CALL_METHOD(visitor, "set", NULL, network, _3);
 	zephir_check_call_status();
 	RETURN_MM();

@@ -8,6 +8,7 @@
 #include "ann/backpropagation.h"
 #include "ann/bias.h"
 #include "ann/branch.h"
+#include "ann/network.h"
 #include "ann/outputfunction.h"
 #include "ann/outputfunction/linear.h"
 #include "ann/outputfunction/threshold.h"
