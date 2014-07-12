@@ -53,7 +53,7 @@ PHP_METHOD(Ann_BackPropagation, __construct) {
 	}
 
 
-	if (!(zephir_is_instance_of(delta, SL("Ann\\Delta") TSRMLS_CC))) {
+	if (!(zephir_instance_of_ev(delta, ann_delta_ce TSRMLS_CC))) {
 		ZEPHIR_THROW_EXCEPTION_DEBUG_STR(spl_ce_InvalidArgumentException, "Parameter 'delta' must be an instance of 'Ann\\Delta'", "", 0);
 		return;
 	}
