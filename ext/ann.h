@@ -6,6 +6,7 @@
 
 #include "ann/activation.h"
 #include "ann/backpropagation.h"
+#include "ann/bias.h"
 #include "ann/branch.h"
 #include "ann/outputfunction.h"
 #include "ann/outputfunction/linear.h"

@@ -220,7 +220,7 @@ PHP_METHOD(Ann_BackPropagation, visitBias) {
 
 
 
-	if (!(zephir_is_instance_of(bias, SL("Ann\\Bias") TSRMLS_CC))) {
+	if (!(zephir_instance_of_ev(bias, ann_bias_ce TSRMLS_CC))) {
 		ZEPHIR_THROW_EXCEPTION_DEBUG_STRW(spl_ce_InvalidArgumentException, "Parameter 'bias' must be an instance of 'Ann\\Bias'", "", 0);
 		return;
 	}
