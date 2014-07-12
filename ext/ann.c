@@ -38,6 +38,7 @@ zend_class_entry *ann_neuron_ce;
 zend_class_entry *ann_outputfunction_linear_ce;
 zend_class_entry *ann_outputfunction_threshold_ce;
 zend_class_entry *ann_peripheral_ce;
+zend_class_entry *ann_synapse_ce;
 
 ZEND_DECLARE_MODULE_GLOBALS(ann)
 
@@ -221,6 +222,7 @@ static PHP_MINIT_FUNCTION(ann)
 	ZEPHIR_INIT(Ann_OutputFunction_Linear);
 	ZEPHIR_INIT(Ann_OutputFunction_Threshold);
 	ZEPHIR_INIT(Ann_Peripheral);
+	ZEPHIR_INIT(Ann_Synapse);
 
 #if PHP_VERSION_ID < 50500
 	setlocale(LC_ALL, old_lc_all);

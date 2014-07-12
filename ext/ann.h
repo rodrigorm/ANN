@@ -16,6 +16,7 @@
 #include "ann/outputfunction/linear.h"
 #include "ann/outputfunction/threshold.h"
 #include "ann/peripheral.h"
+#include "ann/synapse.h"
 #include "ann/visitee.h"
 #include "ann/visitor.h"
 

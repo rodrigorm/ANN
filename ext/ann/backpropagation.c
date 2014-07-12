@@ -263,7 +263,6 @@ PHP_METHOD(Ann_BackPropagation, visitDendrite) {
 
 PHP_METHOD(Ann_BackPropagation, visitSynapse) {
 
-	zend_class_entry *_5;
 	int ZEPHIR_LAST_CALL_STATUS;
 	zval *synapse, *neuron, *weight = NULL, *visitor = NULL, delta, weightChange, *_0, *_1, *_2 = NULL, *_3, *_4 = NULL;
 
@@ -273,7 +272,7 @@ PHP_METHOD(Ann_BackPropagation, visitSynapse) {
 	ZEPHIR_SEPARATE_PARAM(weight);
 
 
-	if (!(zephir_is_instance_of(synapse, SL("Ann\\Synapse") TSRMLS_CC))) {
+	if (!(zephir_instance_of_ev(synapse, ann_synapse_ce TSRMLS_CC))) {
 		ZEPHIR_THROW_EXCEPTION_DEBUG_STR(spl_ce_InvalidArgumentException, "Parameter 'synapse' must be an instance of 'Ann\\Synapse'", "", 0);
 		return;
 	}
@@ -299,14 +298,11 @@ PHP_METHOD(Ann_BackPropagation, visitSynapse) {
 	zephir_add_function(_4, weight, &weightChange TSRMLS_CC);
 	ZEPHIR_CPY_WRT(weight, _4);
 	ZEPHIR_INIT_LNVAR(_4);
-	_5 = zend_fetch_class(SL("Ann\\Synapse"), ZEND_FETCH_CLASS_AUTO TSRMLS_CC);
-	object_init_ex(_4, _5);
-	if (zephir_has_constructor(_4 TSRMLS_CC)) {
-		ZEPHIR_CALL_METHOD(&_2, visitor, "get", NULL, neuron);
-		zephir_check_call_status();
-		ZEPHIR_CALL_METHOD(NULL, _4, "__construct", NULL, _2, weight);
-		zephir_check_call_status();
-	}
+	object_init_ex(_4, ann_synapse_ce);
+	ZEPHIR_CALL_METHOD(&_2, visitor, "get", NULL, neuron);
+	zephir_check_call_status();
+	ZEPHIR_CALL_METHOD(NULL, _4, "__construct", NULL, _2, weight);
+	zephir_check_call_status();
 	ZEPHIR_RETURN_CALL_METHOD(visitor, "set", NULL, synapse, _4);
 	zephir_check_call_status();
 	RETURN_MM();

@@ -1,21 +1,20 @@
-<?php
 
 namespace Ann;
 
-use \Ann\Neuron;
-use \Ann\Activation;
-use \Ann\Visitee;
-use \Ann\Visitor;
+use Ann\Neuron;
+use Ann\Activation;
+use Ann\Visitee;
+use Ann\Visitor;
 
 class Synapse implements Visitee
 {
     private $neuron;
     private $weight = 0;
 
-    public function __construct(Neuron $neuron, $weight)
+    public function __construct(<Neuron> $neuron, $weight)
     {
-        $this->neuron = $neuron;
-        $this->weight = $weight;
+        let $this->neuron = $neuron;
+        let $this->weight = $weight;
     }
 
     public function neuron()
@@ -28,18 +27,18 @@ class Synapse implements Visitee
         return $this->weight;
     }
 
-    public function output(Activation $activation)
+    public function output(<Activation> $activation)
     {
-        $activation = $this->neuron->output($activation);
+        let $activation = $this->neuron->output($activation);
         return $activation->activate($this);
     }
 
-    public function activate(Activation $activation)
+    public function activate(<Activation> $activation)
     {
         return $activation->output($this->neuron) * $this->weight;
     }
 
-    public function accept(Visitor $visitor)
+    public function accept(<Visitor> $visitor)
     {
         return $visitor->visitSynapse($this, $this->neuron, $this->weight);
     }

@@ -79,7 +79,7 @@ PHP_METHOD(Ann_Delta, set) {
 
 
 
-	if (!(zephir_is_instance_of(synapse, SL("Ann\\Synapse") TSRMLS_CC))) {
+	if (!(zephir_instance_of_ev(synapse, ann_synapse_ce TSRMLS_CC))) {
 		ZEPHIR_THROW_EXCEPTION_DEBUG_STR(spl_ce_InvalidArgumentException, "Parameter 'synapse' must be an instance of 'Ann\\Synapse'", "", 0);
 		return;
 	}
@@ -113,7 +113,7 @@ PHP_METHOD(Ann_Delta, delta) {
 
 
 
-	if (!(zephir_is_instance_of(synapse, SL("Ann\\Synapse") TSRMLS_CC))) {
+	if (!(zephir_instance_of_ev(synapse, ann_synapse_ce TSRMLS_CC))) {
 		ZEPHIR_THROW_EXCEPTION_DEBUG_STR(spl_ce_InvalidArgumentException, "Parameter 'synapse' must be an instance of 'Ann\\Synapse'", "", 0);
 		return;
 	}

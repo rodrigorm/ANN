@@ -276,14 +276,14 @@ PHP_METHOD(Ann_Network, response) {
 
 PHP_METHOD(Ann_Network, create) {
 
-	zephir_fcall_cache_entry *_20 = NULL, *_21 = NULL;
-	zephir_nts_static zephir_fcall_cache_entry *_18 = NULL;
-	zend_class_entry *_8, *_14;
+	zephir_fcall_cache_entry *_19 = NULL, *_20 = NULL, *_21 = NULL;
+	zephir_nts_static zephir_fcall_cache_entry *_17 = NULL;
+	zend_class_entry *_8;
 	int _5, ZEPHIR_LAST_CALL_STATUS;
 	zend_bool _4, _7;
 	HashTable *_1, *_11;
 	HashPosition _0, _10;
-	zval *nodes_param = NULL, *inputs, *layer = NULL, *layers, *count = NULL, *i = NULL, *j = NULL, *branch = NULL, *function = NULL, *synapses = NULL, *neuron = NULL, **_2, *_3 = NULL, *_6 = NULL, *_9, **_12, *_13 = NULL, _15 = zval_used_for_init, _16 = zval_used_for_init, *_17 = NULL, *_19 = NULL;
+	zval *nodes_param = NULL, *inputs, *layer = NULL, *layers, *count = NULL, *i = NULL, *j = NULL, *branch = NULL, *function = NULL, *synapses = NULL, *neuron = NULL, **_2, *_3 = NULL, *_6 = NULL, *_9, **_12, *_13 = NULL, _14 = zval_used_for_init, _15 = zval_used_for_init, *_16 = NULL, *_18 = NULL;
 	zval *nodes = NULL;
 
 	ZEPHIR_MM_GROW();
@@ -382,20 +382,17 @@ PHP_METHOD(Ann_Network, create) {
 						) {
 							ZEPHIR_GET_HVALUE(neuron, _12);
 							ZEPHIR_INIT_LNVAR(_13);
-							_14 = zend_fetch_class(SL("Ann\\Synapse"), ZEND_FETCH_CLASS_AUTO TSRMLS_CC);
-							object_init_ex(_13, _14);
-							if (zephir_has_constructor(_13 TSRMLS_CC)) {
-								ZEPHIR_SINIT_NVAR(_15);
-								ZVAL_LONG(&_15, 0);
-								ZEPHIR_SINIT_NVAR(_16);
-								ZVAL_LONG(&_16, 100);
-								ZEPHIR_CALL_FUNCTION(&_17, "rand", &_18, &_15, &_16);
-								zephir_check_call_status();
-								ZEPHIR_INIT_NVAR(_19);
-								ZVAL_DOUBLE(_19, (-1.0 + (zephir_get_numberval(_17) / 50.0)));
-								ZEPHIR_CALL_METHOD(NULL, _13, "__construct", NULL, neuron, _19);
-								zephir_check_call_status();
-							}
+							object_init_ex(_13, ann_synapse_ce);
+							ZEPHIR_SINIT_NVAR(_14);
+							ZVAL_LONG(&_14, 0);
+							ZEPHIR_SINIT_NVAR(_15);
+							ZVAL_LONG(&_15, 100);
+							ZEPHIR_CALL_FUNCTION(&_16, "rand", &_17, &_14, &_15);
+							zephir_check_call_status();
+							ZEPHIR_INIT_NVAR(_18);
+							ZVAL_DOUBLE(_18, (-1.0 + (zephir_get_numberval(_16) / 50.0)));
+							ZEPHIR_CALL_METHOD(NULL, _13, "__construct", &_19, neuron, _18);
+							zephir_check_call_status();
 							zephir_array_append(&synapses, _13, PH_SEPARATE);
 						}
 						ZEPHIR_INIT_NVAR(branch);
