@@ -4,7 +4,6 @@ namespace Ann;
 
 use \Ann\Neuron;
 use \Ann\Trainset;
-use \Ann\BackPropagation\Node;
 use \Ann\Delta;
 use \Ann\Visitor;
 use \SplObjectStorage;

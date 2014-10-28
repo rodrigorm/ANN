@@ -3,7 +3,6 @@
 namespace Ann;
 
 use \Ann\Branch;
-use \Ann\Synapse;
 use \Ann\Activation;
 use \Ann\Visitor;
 

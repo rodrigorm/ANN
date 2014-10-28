@@ -4,16 +4,7 @@ require 'vendor/autoload.php';
 require 'utils.php';
 
 use \Ann\Network,
-    \Ann\Neuron,
-    \Ann\Dendrite,
-    \Ann\Synapse,
-    \Ann\Peripheral,
-    \Ann\Bias,
-    \Ann\Input,
-    \Ann\Trainer,
-    \Ann\OutputFunction\Linear,
-    \Ann\OutputFunction\Sigmoid,
-    \Ann\OutputFunction\Threshold;
+    \Ann\Trainer;
 
 $network = Network::create(array(2, 3, 1));
 $trainer = new Trainer();

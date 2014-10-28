@@ -12,7 +12,6 @@ use \Ann\Bias;
 use \Ann\Dendrite;
 use \Ann\Synapse;
 use \Ann\Delta;
-use \SplObjectStorage;
 
 class DeltaBuilder implements Visitor
 {

@@ -3,8 +3,6 @@
 namespace Ann;
 
 use \Ann\Network;
-use \Ann\Neuron;
-use \Ann\Input;
 use \Ann\BackPropagation;
 use \Ann\Trainset;
 

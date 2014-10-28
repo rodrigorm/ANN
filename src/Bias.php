@@ -3,7 +3,6 @@
 namespace Ann;
 
 use \Ann\Branch;
-use \Ann\Input;
 use \Ann\Visitor;
 
 class Bias implements Branch
