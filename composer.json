@@ -1,4 +1,7 @@
 {
+	"name": "ANN",
+	"description": "A simple example to learn how a artificial neural network works.",
+	"license": "GPL-2.0",
     "autoload": {
         "psr-4": {
             "Ann\\": "src/"
